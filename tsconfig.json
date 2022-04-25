@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es5",
+      "es6",
+      "esnext"
+    ],
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": [
+        "src/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

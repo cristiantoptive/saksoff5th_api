@@ -18,7 +18,7 @@ export class UserController {
     return ViewModel.createMany(UserExcerptViewModel, this.userService.find());
   }
 
-  @Get(":id")
+  @Get("/:id")
   public async getOne(@Param("id") id: string): Promise<UserExcerptViewModel> {
     return ViewModel.createOne(UserExcerptViewModel, this.userService.findOne(id));
   }
@@ -30,14 +30,14 @@ export class UserController {
     throw new ForbiddenError();
   }
 
-  @Put(":id")
+  @Put("/:id")
   @Authorized([Roles.Admin])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public updateUser(@Param("id") id: number, @Body() user: UpdateUserCommand): void {
     throw new ForbiddenError();
   }
 
-  @Delete(":id")
+  @Delete("/:id")
   @Authorized([Roles.Admin])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public removeUser(@Param("id") id: number, @CurrentUser() user: User): void {

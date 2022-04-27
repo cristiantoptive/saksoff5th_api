@@ -35,7 +35,7 @@ export class AuthService {
       throw new UserAlreadyExistsError();
     }
 
-    const user = User.fromData({ ...command, role: Roles.User });
+    const user = User.fromData({ ...command, role: Roles.Admin });
     return this.userRepository.save(user);
   }
 

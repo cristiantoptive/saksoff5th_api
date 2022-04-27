@@ -6,3 +6,8 @@ export interface UploadFile {
   buffer: Buffer;
   size: number;
 }
+
+// eslint-disable-next-line no-shadow
+export enum UploadRelatedTo {
+  Product = "product",
+}

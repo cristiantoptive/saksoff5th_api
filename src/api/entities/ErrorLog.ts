@@ -41,8 +41,6 @@ export class ErrorLog {
         "name",
         "stack",
         "message",
-        "lastName",
-        "password",
       ],
     );
 

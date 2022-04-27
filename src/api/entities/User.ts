@@ -1,42 +1,56 @@
 import * as bcrypt from "bcrypt";
 import { Exclude } from "class-transformer";
-import { BeforeInsert, Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, Unique } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
+import { UserRoles, Roles } from "@app/api/types";
+import { Address } from "./Address";
+import { Card } from "./Card";
+import { Product } from "./Product";
+import { Vendor } from "./Vendor";
+import { Upload } from "./Upload";
+import { Order } from "./Order";
 
 @Entity()
+@Unique("UQ_USER_EMAIL", ["email"])
 export class User {
   @PrimaryGeneratedColumn("uuid")
   public id: string;
 
   @Column({
-    name: "firstName",
     nullable: false,
-  })
-  public firstName: string;
-
-  @Column({
-    name: "lastName",
-    nullable: false,
-  })
-  public lastName: string;
-
-  @Column({
-    unique: true,
-    nullable: false,
+    type: "varchar",
+    length: 255,
   })
   public email: string;
 
   @Column({
     nullable: false,
-  })
-  public role: string;
-
-  @Column({
-    nullable: false,
+    type: "varchar",
+    length: 255,
   })
   @Exclude()
   public password: string;
+
+  @Column({
+    nullable: false,
+    enum: UserRoles,
+  })
+  public role: Roles;
+
+  @Column({
+    nullable: false,
+    type: "varchar",
+    length: 255,
+  })
+  public firstName: string;
+
+  @Column({
+    nullable: false,
+    type: "varchar",
+    length: 255,
+  })
+  public lastName: string;
 
   @CreateDateColumn({
     nullable: false,
@@ -47,6 +61,24 @@ export class User {
     nullable: false,
   })
   public updatedOn: Date;
+
+  @OneToMany(() => Address, address => address.user)
+  public addresses: Promise<Address[]>;
+
+  @OneToMany(() => Card, card => card.user)
+  public cards: Promise<Card[]>;
+
+  @OneToMany(() => Vendor, vendor => vendor.createdBy)
+  public vendors: Promise<Vendor[]>;
+
+  @OneToMany(() => Product, product => product.createdBy)
+  public products: Promise<Product[]>;
+
+  @OneToMany(() => Upload, upload => upload.createdBy)
+  public uploads: Promise<Upload[]>;
+
+  @OneToMany(() => Order, order => order.placedBy)
+  public orders: Promise<Order[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

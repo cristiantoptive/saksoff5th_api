@@ -1,2 +1,10 @@
 export { UserRepository } from "./UserRepository";
 export { ErrorLogRepository } from "./ErrorLogRepository";
+export { CardRepository } from "./CardRepository";
+export { AddressRepository } from "./AddressRepository";
+export { ProductRepository } from "./ProductRepository";
+export { ProductCategoryRepository } from "./ProductCategoryRepository";
+export { UploadRepository } from "./UploadRepository";
+export { VendorRepository } from "./VendorRepository";
+export { OrderRepository } from "./OrderRepository";
+export { OrderItemRepository } from "./OrderItemRepository";

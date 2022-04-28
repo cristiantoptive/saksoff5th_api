@@ -112,6 +112,7 @@ export class Address {
         "state",
         "zipcode",
         "country",
+        "user",
       ],
     );
 

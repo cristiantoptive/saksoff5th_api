@@ -60,6 +60,7 @@ export class Card {
         "name",
         "number",
         "expiresOn",
+        "user",
       ],
     );
 

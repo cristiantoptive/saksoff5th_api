@@ -1,7 +1,8 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsEnum, IsOptional, IsString } from "class-validator";
 import { JSONSchema } from "class-validator-jsonschema";
 import { ViewModel } from "./ViewModel";
 import { Address } from "@app/api/entities/Address";
+import { AddressTypes } from "@app/api/types";
 
 @JSONSchema({
   description: "Address view model",
@@ -10,7 +11,7 @@ export class AddressViewModel extends ViewModel {
   @IsString()
   id: string;
 
-  @IsString()
+  @IsEnum(AddressTypes)
   type: string;
 
   @IsString()

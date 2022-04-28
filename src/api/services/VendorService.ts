@@ -6,7 +6,7 @@ import { Vendor } from "@app/api/entities/Vendor";
 import { User } from "@app/api/entities/User";
 import { VendorRepository } from "@app/api/repositories";
 import { CreateVendorCommand, UpdateVendorCommand } from "@app/api/commands/vendors";
-import { Roles } from "../types";
+import { Roles } from "@app/api/types";
 
 @Service()
 export class VendorService {

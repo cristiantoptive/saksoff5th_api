@@ -4,3 +4,4 @@ export { UserExcerptViewModel } from "./UserExcerptViewModel";
 export { AuthTokenViewModel } from "./AuthTokenViewModel";
 export { ProductCategoryViewModel } from "./ProductCategoryViewModel";
 export { VendorViewModel } from "./VendorViewModel";
+export { AddressViewModel } from "./AddressViewModel";

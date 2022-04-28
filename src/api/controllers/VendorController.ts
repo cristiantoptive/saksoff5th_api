@@ -23,19 +23,19 @@ export class VendorController {
   }
 
   @Post()
-  @Authorized([Roles.Admin, Roles.Merchandiser])
+  @Authorized([Roles.Merchandiser])
   public create(@CurrentUser() user: User, @Body() command: CreateVendorCommand): Promise<VendorViewModel> {
     return ViewModel.createOne(VendorViewModel, this.vendorsService.create(command, user));
   }
 
   @Put("/:id")
-  @Authorized([Roles.Admin, Roles.Merchandiser])
+  @Authorized([Roles.Merchandiser])
   public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: UpdateVendorCommand): Promise<VendorViewModel> {
     return ViewModel.createOne(VendorViewModel, this.vendorsService.update(id, command, user));
   }
 
   @Delete("/:id")
-  @Authorized([Roles.Admin, Roles.Merchandiser])
+  @Authorized([Roles.Merchandiser])
   public async delete(@CurrentUser() user: User, @Param("id") id: string): Promise<any> {
     const result = await this.vendorsService.delete(id, user);
 

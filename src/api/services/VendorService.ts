@@ -6,7 +6,6 @@ import { Vendor } from "@app/api/entities/Vendor";
 import { User } from "@app/api/entities/User";
 import { VendorRepository } from "@app/api/repositories";
 import { CreateVendorCommand, UpdateVendorCommand } from "@app/api/commands/vendors";
-import { Roles } from "@app/api/types";
 
 @Service()
 export class VendorService {
@@ -27,7 +26,7 @@ export class VendorService {
   }
 
   public find(id: string, user?: User): Promise<Vendor | undefined> {
-    if (!user || user.role === Roles.Admin) {
+    if (!user) {
       return this.vendorRepository.findOneOrFail(id);
     }
 
@@ -61,10 +60,6 @@ export class VendorService {
   }
 
   public async delete(id: string, user: User): Promise<DeleteResult> {
-    if (user.role === Roles.Admin) {
-      return this.vendorRepository.delete(id);
-    }
-
     return this.vendorRepository.delete({
       id,
       createdBy: user,

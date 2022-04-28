@@ -6,3 +6,5 @@ export { ProductCategoryViewModel } from "./ProductCategoryViewModel";
 export { VendorViewModel } from "./VendorViewModel";
 export { AddressViewModel } from "./AddressViewModel";
 export { CardViewModel } from "./CardViewModel";
+export { ProductViewModel } from "./ProductViewModel";
+export { UploadViewModel } from "./UploadViewModel";

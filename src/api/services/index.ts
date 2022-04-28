@@ -4,3 +4,4 @@ export { ProductCategoryService } from "./ProductCategoryService";
 export { VendorService } from "./VendorService";
 export { AddressService } from "./AddressService";
 export { CardsService } from "./CardsService";
+export { ProductsService } from "./ProductsService";

@@ -6,6 +6,7 @@ import { Address } from "@app/api/entities/Address";
 import { User } from "@app/api/entities/User";
 import { AddressRepository } from "@app/api/repositories";
 import { CreateAddressCommand, UpdateAddressCommand } from "@app/api/commands/addresses";
+import { AddressTypes } from "@app/api/types";
 
 @Service()
 export class AddressService {
@@ -21,14 +22,13 @@ export class AddressService {
     });
   }
 
-  public find(id: string, user: User): Promise<Address | undefined> {
+  public find(id: string, user: User, type?: AddressTypes): Promise<Address | undefined> {
     return this.addressRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          user,
-        },
-      ],
+      where: [{
+        id,
+        user,
+        ...(type ? { type } : { }),
+      }],
     });
   }
 

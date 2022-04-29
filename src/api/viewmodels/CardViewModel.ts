@@ -8,18 +8,18 @@ import { Card } from "@app/api/entities/Card";
 })
 export class CardViewModel extends ViewModel {
   @IsString()
-  id: string;
+  public id: string;
 
   @IsString()
-  name: string;
+  public name: string;
 
   @IsString()
-  number: string;
+  public number: string;
 
   @IsDate()
-  expiresOn: Date;
+  public expiresOn: Date;
 
-  construct(card: Card): Promise<CardViewModel> {
+  public construct(card: Card): Promise<CardViewModel> {
     return super.mapObjectKeys({
       id: card.id,
       name: card.name,

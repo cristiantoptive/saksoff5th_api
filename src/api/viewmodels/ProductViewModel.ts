@@ -1,5 +1,5 @@
 
-import { IsString, IsNumber, IsBoolean, IsInstance } from "class-validator";
+import { IsString, IsNumber, IsBoolean, IsInstance, IsArray } from "class-validator";
 import { JSONSchema } from "class-validator-jsonschema";
 import { ViewModel } from "./ViewModel";
 import { Product } from "@app/api/entities/Product";
@@ -12,41 +12,42 @@ import { UploadViewModel } from "./UploadViewModel";
 })
 export class ProductViewModel extends ViewModel {
   @IsString()
-  id: string;
+  public id: string;
 
   @IsString()
-  SKU: string;
+  public SKU: string;
 
   @IsString()
-  title: string;
+  public title: string;
 
   @IsString()
-  description: string;
+  public description: string;
 
   @IsNumber()
-  price: number;
+  public price: number;
 
   @IsNumber()
-  inventory: number;
+  public inventory: number;
 
   @IsString()
-  deliveryTime: number;
+  public deliveryTime: number;
 
   @IsBoolean()
-  isActive: boolean;
+  public isActive: boolean;
 
   @IsInstance(VendorViewModel)
-  vendor: VendorViewModel;
+  public vendor: VendorViewModel;
 
   @IsInstance(ProductCategoryViewModel)
-  category: ProductCategoryViewModel;
+  public category: ProductCategoryViewModel;
 
+  @IsArray()
   @IsInstance(UploadViewModel, {
     each: true,
   })
-  images: UploadViewModel[];
+  public images: UploadViewModel[];
 
-  construct(product: Product): Promise<ProductViewModel> {
+  public construct(product: Product): Promise<ProductViewModel> {
     return super.mapObjectKeys({
       id: product.id,
       SKU: product.SKU,

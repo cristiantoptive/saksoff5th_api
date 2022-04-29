@@ -8,15 +8,15 @@ import { ProductCategory } from "@app/api/entities/ProductCategory";
 })
 export class ProductCategoryViewModel extends ViewModel {
   @IsString()
-  id: string;
+  public id: string;
 
   @IsString()
-  name: string;
+  public name: string;
 
   @IsString()
-  code: string;
+  public code: string;
 
-  construct(category: ProductCategory): Promise<ProductCategoryViewModel> {
+  public construct(category: ProductCategory): Promise<ProductCategoryViewModel> {
     return super.mapObjectKeys({
       id: category.id,
       name: category.name,

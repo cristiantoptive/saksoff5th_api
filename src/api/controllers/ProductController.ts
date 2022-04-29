@@ -9,7 +9,7 @@ import { Roles } from "@app/api/types";
 
 @Service()
 @JsonController("/products")
-export class ProductsController {
+export class ProductController {
   @Inject() private productsService: ProductsService;
 
   @Get()

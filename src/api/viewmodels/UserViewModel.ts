@@ -8,19 +8,19 @@ import { User } from "@app/api/entities/User";
 })
 export class UserViewModel extends ViewModel {
   @IsString()
-  id: string;
+  public id: string;
 
   @IsString()
   @IsEmail()
-  email: string;
+  public email: string;
 
   @IsString()
-  firstName: string;
+  public firstName: string;
 
   @IsString()
-  lastName: string;
+  public lastName: string;
 
-  construct(user: User): Promise<UserViewModel> {
+  public construct(user: User): Promise<UserViewModel> {
     return super.mapObjectKeys({
       id: user.id,
       email: user.email,

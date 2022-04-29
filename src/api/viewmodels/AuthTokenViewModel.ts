@@ -9,12 +9,12 @@ import { ViewModel } from "./ViewModel";
 })
 export class AuthTokenViewModel extends ViewModel {
   @IsString()
-  token: string;
+  public token: string;
 
   @IsInstance(UserViewModel)
-  user: UserViewModel;
+  public user: UserViewModel;
 
-  construct(values: { token: string, user: User }): Promise<AuthTokenViewModel> {
+  public construct(values: { token: string, user: User }): Promise<AuthTokenViewModel> {
     return super.mapObjectKeys({
       token: values.token,
       user: ViewModel.createOne(UserViewModel, values.user),

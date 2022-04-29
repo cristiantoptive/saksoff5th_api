@@ -9,34 +9,34 @@ import { AddressTypes } from "@app/api/types";
 })
 export class AddressViewModel extends ViewModel {
   @IsString()
-  id: string;
+  public id: string;
 
   @IsEnum(AddressTypes)
-  type: string;
+  public type: string;
 
   @IsString()
-  firstName: string;
+  public firstName: string;
 
   @IsString()
-  lastName: string;
+  public lastName: string;
 
   @IsString()
-  line1: string;
+  public line1: string;
 
   @IsString()
   @IsOptional()
-  line2: string;
+  public line2: string;
 
   @IsString()
-  state: string;
+  public state: string;
 
   @IsString()
-  zipcode: string;
+  public zipcode: string;
 
   @IsString()
-  country: string;
+  public country: string;
 
-  construct(address: Address): Promise<AddressViewModel> {
+  public construct(address: Address): Promise<AddressViewModel> {
     return super.mapObjectKeys({
       id: address.id,
       type: address.type,

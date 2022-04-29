@@ -9,7 +9,7 @@ import { CreateCardCommand, UpdateCardCommand } from "@app/api/commands/cards";
 @Service()
 @Authorized()
 @JsonController("/cards")
-export class CardsController {
+export class CardController {
   @Inject() private cardsService: CardsService;
 
   @Get()

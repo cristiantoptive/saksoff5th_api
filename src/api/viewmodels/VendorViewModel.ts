@@ -8,15 +8,15 @@ import { Vendor } from "@app/api/entities/Vendor";
 })
 export class VendorViewModel extends ViewModel {
   @IsString()
-  id: string;
+  public id: string;
 
   @IsString()
-  name: string;
+  public name: string;
 
   @IsString()
-  code: string;
+  public code: string;
 
-  construct(vendor: Vendor): Promise<VendorViewModel> {
+  public construct(vendor: Vendor): Promise<VendorViewModel> {
     return super.mapObjectKeys({
       id: vendor.id,
       name: vendor.name,

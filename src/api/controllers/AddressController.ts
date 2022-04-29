@@ -4,7 +4,7 @@ import { Inject, Service } from "typedi";
 import { AddressService } from "@app/api/services";
 import { ViewModel, AddressViewModel } from "@app/api/viewmodels";
 import { User } from "@app/api/entities/User";
-import { CreateAddressCommand, UpdateAddressCommand } from "@app/api/commands/addresses";
+import { AddressCommand } from "@app/api/commands";
 
 @Service()
 @Authorized()
@@ -23,12 +23,12 @@ export class AddressController {
   }
 
   @Post()
-  public create(@CurrentUser() user: User, @Body() command: CreateAddressCommand): Promise<AddressViewModel> {
+  public create(@CurrentUser() user: User, @Body() command: AddressCommand): Promise<AddressViewModel> {
     return ViewModel.createOne(AddressViewModel, this.addressesService.create(command, user));
   }
 
   @Put("/:id")
-  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: UpdateAddressCommand): Promise<AddressViewModel> {
+  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: AddressCommand): Promise<AddressViewModel> {
     return ViewModel.createOne(AddressViewModel, this.addressesService.update(id, command, user));
   }
 

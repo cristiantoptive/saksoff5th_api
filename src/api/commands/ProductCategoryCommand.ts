@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength } from "class-validator";
 
-export class CreateProductCategoryCommand {
+export class ProductCategoryCommand {
   @IsString()
   @IsNotEmpty({
     message: "Category name is required",

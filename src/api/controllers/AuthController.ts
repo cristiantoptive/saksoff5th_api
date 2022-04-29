@@ -2,7 +2,7 @@ import { Authorized, Body, CurrentUser, ForbiddenError, Get, JsonController, Not
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import { Inject, Service } from "typedi";
 
-import { ChangePasswordCommand, SigninCommand, SignupCommand } from "@app/api/commands/auth";
+import { ChangePasswordCommand, SigninCommand, SignupCommand } from "@app/api/commands";
 import { ViewModel, UserViewModel, AuthTokenViewModel } from "@app/api/viewmodels";
 import { AuthService } from "@app/api/services";
 import { User } from "@app/api/entities/User";

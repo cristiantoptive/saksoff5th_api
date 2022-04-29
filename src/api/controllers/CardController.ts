@@ -4,7 +4,7 @@ import { Inject, Service } from "typedi";
 import { CardsService } from "@app/api/services";
 import { ViewModel, CardViewModel } from "@app/api/viewmodels";
 import { User } from "@app/api/entities/User";
-import { CreateCardCommand, UpdateCardCommand } from "@app/api/commands/cards";
+import { CardCommand } from "@app/api/commands";
 
 @Service()
 @Authorized()
@@ -23,12 +23,12 @@ export class CardController {
   }
 
   @Post()
-  public create(@CurrentUser() user: User, @Body() command: CreateCardCommand): Promise<CardViewModel> {
+  public create(@CurrentUser() user: User, @Body() command: CardCommand): Promise<CardViewModel> {
     return ViewModel.createOne(CardViewModel, this.cardsService.create(command, user));
   }
 
   @Put("/:id")
-  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: UpdateCardCommand): Promise<CardViewModel> {
+  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: CardCommand): Promise<CardViewModel> {
     return ViewModel.createOne(CardViewModel, this.cardsService.update(id, command, user));
   }
 

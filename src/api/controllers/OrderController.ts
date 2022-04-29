@@ -4,7 +4,7 @@ import { Inject, Service } from "typedi";
 import { OrderService } from "@app/api/services";
 import { ViewModel, OrderViewModel } from "@app/api/viewmodels";
 import { User } from "@app/api/entities/User";
-import { CreateOrderCommand, UpdateOrderCommand } from "@app/api/commands/orders";
+import { OrderCommand } from "@app/api/commands";
 
 @Service()
 @Authorized()
@@ -23,12 +23,12 @@ export class OrderController {
   }
 
   @Post()
-  public create(@CurrentUser() user: User, @Body() command: CreateOrderCommand): Promise<OrderViewModel> {
+  public create(@CurrentUser() user: User, @Body() command: OrderCommand): Promise<OrderViewModel> {
     return ViewModel.createOne(OrderViewModel, this.ordersService.create(command, user));
   }
 
   @Put("/:id")
-  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: UpdateOrderCommand): Promise<OrderViewModel> {
+  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: OrderCommand): Promise<OrderViewModel> {
     return ViewModel.createOne(OrderViewModel, this.ordersService.update(id, command, user));
   }
 

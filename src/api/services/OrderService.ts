@@ -6,7 +6,7 @@ import { Order } from "@app/api/entities/Order";
 import { OrderItem } from "@app/api/entities/OrderItem";
 import { User } from "@app/api/entities/User";
 import { OrderRepository, OrderItemRepository } from "@app/api/repositories";
-import { CreateOrderCommand, UpdateOrderCommand } from "@app/api/commands/orders";
+import { OrderCommand } from "@app/api/commands";
 import { AddressTypes, OrderStatuses } from "@app/api/types";
 import { AddressService } from "./AddressService";
 import { CardsService } from "./CardsService";
@@ -41,7 +41,7 @@ export class OrderService {
     });
   }
 
-  public async create(command: CreateOrderCommand, user: User): Promise<Order> {
+  public async create(command: OrderCommand, user: User): Promise<Order> {
     const order = Order.fromData({
       status: OrderStatuses.Placed,
       placedBy: user,
@@ -56,7 +56,7 @@ export class OrderService {
     return order;
   }
 
-  public async update(id: string, command: UpdateOrderCommand, user: User): Promise<Order> {
+  public async update(id: string, command: OrderCommand, user: User): Promise<Order> {
     const order = await this.find(id, user);
     if (order.status !== OrderStatuses.Placed) {
       throw new Error("Only placed orders can be updated");
@@ -88,7 +88,7 @@ export class OrderService {
     });
   }
 
-  private async createOrderItems(order: Order, command: CreateOrderCommand | UpdateOrderCommand) {
+  private async createOrderItems(order: Order, command: OrderCommand) {
     for (const item of command.items) {
       const product = await this.productsService.find(item.product);
 

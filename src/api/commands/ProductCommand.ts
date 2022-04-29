@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, Min, IsUUID, IsOptional, IsString, MaxLength, IsBoolean } from "class-validator";
 
-export class UpdateProductCommand {
+export class ProductCommand {
   @IsString()
   @IsNotEmpty({
     message: "Product SKU is required",

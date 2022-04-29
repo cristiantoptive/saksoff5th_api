@@ -4,7 +4,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { ProductCategory } from "@app/api/entities/ProductCategory";
 import { ProductCategoryRepository } from "@app/api/repositories";
-import { CreateProductCategoryCommand, UpdateProductCategoryCommand } from "@app/api/commands/categories";
+import { ProductCategoryCommand } from "@app/api/commands";
 
 @Service()
 export class ProductCategoryService {
@@ -18,7 +18,7 @@ export class ProductCategoryService {
     return this.categoryRepository.findOneOrFail(id);
   }
 
-  public create(command: CreateProductCategoryCommand): Promise<ProductCategory> {
+  public create(command: ProductCategoryCommand): Promise<ProductCategory> {
     const category = ProductCategory.fromData({
       name: command.name,
     });
@@ -26,7 +26,7 @@ export class ProductCategoryService {
     return this.categoryRepository.save(category);
   }
 
-  public async update(id: string, command: UpdateProductCategoryCommand): Promise<ProductCategory> {
+  public async update(id: string, command: ProductCategoryCommand): Promise<ProductCategory> {
     const category = await this.find(id);
 
     ProductCategory.updateData(category, {

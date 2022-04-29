@@ -4,7 +4,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { User } from "@app/api/entities/User";
 import { UserRepository } from "@app/api/repositories/UserRepository";
 import { UserAlreadyExistsError } from "@app/api/errors";
-import { CreateUserCommand, UpdateUserCommand } from "@app/api/commands/users";
+import { UserCommand } from "@app/api/commands";
 import { DeleteResult } from "typeorm";
 
 @Service()
@@ -23,7 +23,7 @@ export class UserService {
     return this.userRepository.findOne({ id });
   }
 
-  public async create(command: CreateUserCommand): Promise<User> {
+  public async create(command: UserCommand): Promise<User> {
     const existingUser = await this.userRepository.findOne({ email: command.email });
     if (existingUser) {
       throw new UserAlreadyExistsError();
@@ -40,7 +40,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  public async update(id: string, command: UpdateUserCommand): Promise<User> {
+  public async update(id: string, command: UserCommand): Promise<User> {
     const user = await this.find(id);
 
     if (command.email !== user.email) {

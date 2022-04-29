@@ -1,7 +1,7 @@
 import { Authorized, Body, JsonController, CurrentUser, Delete, ForbiddenError, Get, Param, Put, Post, BadRequestError } from "routing-controllers";
 import { Inject, Service } from "typedi";
 
-import { UpdateUserCommand, CreateUserCommand } from "@app/api/commands/users";
+import { UserCommand } from "@app/api/commands";
 import { ViewModel, UserExcerptViewModel, UserViewModel } from "@app/api/viewmodels";
 import { UserService } from "@app/api/services";
 import { User } from "@app/api/entities/User";
@@ -26,13 +26,13 @@ export class UserController {
 
   @Post()
   @Authorized([Roles.Admin])
-  public create(@Body() command: CreateUserCommand): Promise<UserViewModel> {
+  public create(@Body() command: UserCommand): Promise<UserViewModel> {
     return ViewModel.createOne(UserViewModel, this.userService.create(command));
   }
 
   @Put("/:id")
   @Authorized([Roles.Admin])
-  public update(@Param("id") id: string, @Body() command: UpdateUserCommand): Promise<UserViewModel> {
+  public update(@Param("id") id: string, @Body() command: UserCommand): Promise<UserViewModel> {
     return ViewModel.createOne(UserViewModel, this.userService.update(id, command));
   }
 

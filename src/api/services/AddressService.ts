@@ -5,7 +5,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { Address } from "@app/api/entities/Address";
 import { User } from "@app/api/entities/User";
 import { AddressRepository } from "@app/api/repositories";
-import { CreateAddressCommand, UpdateAddressCommand } from "@app/api/commands/addresses";
+import { AddressCommand } from "@app/api/commands";
 import { AddressTypes } from "@app/api/types";
 
 @Service()
@@ -32,7 +32,7 @@ export class AddressService {
     });
   }
 
-  public create(command: CreateAddressCommand, user: User): Promise<Address> {
+  public create(command: AddressCommand, user: User): Promise<Address> {
     const address = Address.fromData({
       user: user,
       type: command.type,
@@ -49,7 +49,7 @@ export class AddressService {
     return this.addressRepository.save(address);
   }
 
-  public async update(id: string, command: UpdateAddressCommand, user: User): Promise<Address> {
+  public async update(id: string, command: AddressCommand, user: User): Promise<Address> {
     const address = await this.find(id, user);
 
     Address.updateData(address, {

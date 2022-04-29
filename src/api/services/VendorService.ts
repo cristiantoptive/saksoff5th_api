@@ -5,7 +5,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { Vendor } from "@app/api/entities/Vendor";
 import { User } from "@app/api/entities/User";
 import { VendorRepository } from "@app/api/repositories";
-import { CreateVendorCommand, UpdateVendorCommand } from "@app/api/commands/vendors";
+import { VendorCommand } from "@app/api/commands";
 
 @Service()
 export class VendorService {
@@ -40,7 +40,7 @@ export class VendorService {
     });
   }
 
-  public create(command: CreateVendorCommand, user: User): Promise<Vendor> {
+  public create(command: VendorCommand, user: User): Promise<Vendor> {
     const vendor = Vendor.fromData({
       name: command.name,
       createdBy: user,
@@ -49,7 +49,7 @@ export class VendorService {
     return this.vendorRepository.save(vendor);
   }
 
-  public async update(id: string, command: UpdateVendorCommand, user: User): Promise<Vendor> {
+  public async update(id: string, command: VendorCommand, user: User): Promise<Vendor> {
     const vendor = await this.find(id, user);
 
     Vendor.updateData(vendor, {

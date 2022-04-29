@@ -5,7 +5,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { Card } from "@app/api/entities/Card";
 import { User } from "@app/api/entities/User";
 import { CardRepository } from "@app/api/repositories";
-import { CreateCardCommand, UpdateCardCommand } from "@app/api/commands/cards";
+import { CardCommand } from "@app/api/commands";
 
 @Service()
 export class CardsService {
@@ -32,7 +32,7 @@ export class CardsService {
     });
   }
 
-  public create(command: CreateCardCommand, user: User): Promise<Card> {
+  public create(command: CardCommand, user: User): Promise<Card> {
     const card = Card.fromData({
       user: user,
       name: command.name,
@@ -43,7 +43,7 @@ export class CardsService {
     return this.cardsRepository.save(card);
   }
 
-  public async update(id: string, command: UpdateCardCommand, user: User): Promise<Card> {
+  public async update(id: string, command: CardCommand, user: User): Promise<Card> {
     const card = await this.find(id, user);
 
     Card.updateData(card, {

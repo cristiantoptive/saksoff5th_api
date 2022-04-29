@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength, IsDate } from "class-validator";
 
-export class CreateCardCommand {
+export class CardCommand {
   @IsString()
   @IsNotEmpty({
     message: "Card holder name is required",

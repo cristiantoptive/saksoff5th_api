@@ -5,7 +5,7 @@ import { VendorService } from "@app/api/services";
 import { ViewModel, VendorViewModel } from "@app/api/viewmodels";
 import { Roles } from "@app/api/types";
 import { User } from "@app/api/entities/User";
-import { CreateVendorCommand, UpdateVendorCommand } from "@app/api/commands/vendors";
+import { VendorCommand } from "@app/api/commands";
 
 @Service()
 @JsonController("/vendors")
@@ -24,13 +24,13 @@ export class VendorController {
 
   @Post()
   @Authorized([Roles.Merchandiser])
-  public create(@CurrentUser() user: User, @Body() command: CreateVendorCommand): Promise<VendorViewModel> {
+  public create(@CurrentUser() user: User, @Body() command: VendorCommand): Promise<VendorViewModel> {
     return ViewModel.createOne(VendorViewModel, this.vendorsService.create(command, user));
   }
 
   @Put("/:id")
   @Authorized([Roles.Merchandiser])
-  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: UpdateVendorCommand): Promise<VendorViewModel> {
+  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: VendorCommand): Promise<VendorViewModel> {
     return ViewModel.createOne(VendorViewModel, this.vendorsService.update(id, command, user));
   }
 

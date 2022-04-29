@@ -1,6 +1,6 @@
 import { IsInstance, IsArray, IsNumber, IsUUID, Min } from "class-validator";
 
-export class CreateOrderItemCommand {
+export class OrderItemCommand {
   @IsUUID(4, {
     message: "Product must be a valid product uuid",
   })
@@ -19,7 +19,7 @@ export class CreateOrderItemCommand {
   public quantity: number;
 }
 
-export class CreateOrderCommand {
+export class OrderCommand {
   @IsUUID(4, {
     message: "Shipping address must be a valid shipping address uuid",
   })
@@ -36,10 +36,8 @@ export class CreateOrderCommand {
   public card: string;
 
   @IsArray()
-  @IsInstance(CreateOrderItemCommand, {
+  @IsInstance(OrderItemCommand, {
     each: true,
   })
-  public items: CreateOrderItemCommand[];
+  public items: OrderItemCommand[];
 }
-
-

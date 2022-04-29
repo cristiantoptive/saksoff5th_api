@@ -4,7 +4,7 @@ import { Inject, Service } from "typedi";
 
 import { ProductCategoryService } from "@app/api/services";
 import { ViewModel, ProductCategoryViewModel } from "@app/api/viewmodels";
-import { CreateProductCategoryCommand, UpdateProductCategoryCommand } from "@app/api/commands/categories";
+import { ProductCategoryCommand } from "@app/api/commands";
 import { Roles } from "@app/api/types";
 
 @Service()
@@ -40,7 +40,7 @@ export class ProductCategoryController {
   @ResponseSchema(ProductCategoryViewModel, {
     description: "A view of the freshly created product category",
   })
-  public create(@Body() command: CreateProductCategoryCommand): Promise<ProductCategoryViewModel> {
+  public create(@Body() command: ProductCategoryCommand): Promise<ProductCategoryViewModel> {
     return ViewModel.createOne(ProductCategoryViewModel, this.categoriesService.create(command));
   }
 
@@ -53,7 +53,7 @@ export class ProductCategoryController {
   @ResponseSchema(ProductCategoryViewModel, {
     description: "A view of the updated product category",
   })
-  public update(@Param("id") id: string, @Body() command: UpdateProductCategoryCommand): Promise<ProductCategoryViewModel> {
+  public update(@Param("id") id: string, @Body() command: ProductCategoryCommand): Promise<ProductCategoryViewModel> {
     return ViewModel.createOne(ProductCategoryViewModel, this.categoriesService.update(id, command));
   }
 

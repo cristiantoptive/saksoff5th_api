@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength } from "class-validator";
 
-export class UpdateVendorCommand {
+export class VendorCommand {
   @IsString()
   @IsNotEmpty({
     message: "Vendor name is required",

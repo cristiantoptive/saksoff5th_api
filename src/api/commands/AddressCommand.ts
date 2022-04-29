@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString, MaxLength, IsEnum, IsOptional } from "class-validator";
 import { AddressTypes } from "@app/api/types";
 
-export class UpdateAddressCommand {
+export class AddressCommand {
   @IsEnum(AddressTypes, {
     message: "Address type isn't valid",
   })
@@ -70,7 +70,6 @@ export class UpdateAddressCommand {
     message: "Zipcode can't have more than 255 characters",
   })
   public zipcode: string;
-
 
   @IsString()
   @IsNotEmpty({

@@ -4,7 +4,7 @@ import { Inject, Service } from "typedi";
 import { ProductsService } from "@app/api/services";
 import { ViewModel, ProductViewModel } from "@app/api/viewmodels";
 import { User } from "@app/api/entities/User";
-import { CreateProductCommand, UpdateProductCommand } from "@app/api/commands/products";
+import { ProductCommand } from "@app/api/commands";
 import { Roles } from "@app/api/types";
 
 @Service()
@@ -24,13 +24,13 @@ export class ProductController {
 
   @Post()
   @Authorized([Roles.Merchandiser])
-  public create(@CurrentUser() user: User, @Body() command: CreateProductCommand): Promise<ProductViewModel> {
+  public create(@CurrentUser() user: User, @Body() command: ProductCommand): Promise<ProductViewModel> {
     return ViewModel.createOne(ProductViewModel, this.productsService.create(command, user));
   }
 
   @Put("/:id")
   @Authorized([Roles.Merchandiser])
-  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: UpdateProductCommand): Promise<ProductViewModel> {
+  public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: ProductCommand): Promise<ProductViewModel> {
     return ViewModel.createOne(ProductViewModel, this.productsService.update(id, command, user));
   }
 

@@ -6,7 +6,7 @@ import { Product } from "@app/api/entities/Product";
 import { User } from "@app/api/entities/User";
 import { ProductRepository } from "@app/api/repositories";
 import { VendorService, ProductCategoryService } from "@app/api/services";
-import { CreateProductCommand, UpdateProductCommand } from "@app/api/commands/products";
+import { ProductCommand } from "@app/api/commands";
 
 @Service()
 export class ProductsService {
@@ -43,7 +43,7 @@ export class ProductsService {
     });
   }
 
-  public async create(command: CreateProductCommand, user: User): Promise<Product> {
+  public async create(command: ProductCommand, user: User): Promise<Product> {
     const product = Product.fromData({
       SKU: command.SKU,
       title: command.title,
@@ -60,7 +60,7 @@ export class ProductsService {
     return this.productsRepository.save(product);
   }
 
-  public async update(id: string, command: UpdateProductCommand, user: User): Promise<Product> {
+  public async update(id: string, command: ProductCommand, user: User): Promise<Product> {
     const product = await this.find(id, user);
 
     Product.updateData(product, {

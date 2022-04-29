@@ -1,0 +1,5 @@
+entity: Vendor
+items:
+  vendor1:
+    name: 'Vendor 1'
+    createdBy: '@user2'

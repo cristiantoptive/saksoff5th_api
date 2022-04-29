@@ -57,13 +57,13 @@ export class Upload {
     nullable: true,
     onDelete: "SET NULL",
   })
-  public product: Promise<Product>;
+  public product: Promise<Product> | Product;
 
   @ManyToOne(() => User, user => user.uploads, {
     nullable: true,
     onDelete: "SET NULL",
   })
-  public createdBy: Promise<User>;
+  public createdBy: Promise<User> | User;
 
   public static fromData(data: { [prop: string]: any }): Upload {
     return Upload.updateData(new Upload(), data);

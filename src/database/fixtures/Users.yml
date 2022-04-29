@@ -1,0 +1,26 @@
+entity: User
+items:
+  user1:
+    email: admin@admin.com
+    password: admin123
+    role: admin
+    firstName: Cristian
+    lastName: Tardivo
+  user2:
+    email: merchandiser1@merchandiser.com
+    password: merchandiser123
+    role: merchandiser
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+  user3:
+    email: customer1@customer.com
+    password: customer123
+    role: customer
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'
+  user4:
+    email: customer2@customer.com
+    password: customer123
+    role: customer
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'

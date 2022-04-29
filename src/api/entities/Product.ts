@@ -71,22 +71,22 @@ export class Product {
     onDelete: "SET NULL",
     nullable: true,
   })
-  public createdBy: Promise<User>;
+  public createdBy: Promise<User> | User;
 
   @ManyToOne(() => Vendor, vendor => vendor.products, {
     onDelete: "SET NULL",
     nullable: true,
   })
-  public vendor: Promise<Vendor>;
+  public vendor: Promise<Vendor> | Vendor;
 
   @ManyToOne(() => ProductCategory, category => category.products, {
     onDelete: "SET NULL",
     nullable: true,
   })
-  public category: Promise<ProductCategory>;
+  public category: Promise<ProductCategory> | ProductCategory;
 
   @OneToMany(() => Upload, upload => upload.product)
-  public images: Promise<Upload[]>;
+  public images: Promise<Upload[]> | Upload[];
 
   public static fromData(data: { [prop: string]: any }): Product {
     return Product.updateData(new Product(), data);

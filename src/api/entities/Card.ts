@@ -43,10 +43,10 @@ export class Card {
     onDelete: "CASCADE",
     nullable: false,
   })
-  public user: Promise<User>;
+  public user: Promise<User> | User;
 
   @OneToMany(() => Order, order => order.paymentCard)
-  public usedForOrder: Promise<Order[]>;
+  public usedForOrder: Promise<Order[]> | Order[];
 
   public static fromData(data: { [prop: string]: any }): Card {
     return Card.updateData(new Card(), data);

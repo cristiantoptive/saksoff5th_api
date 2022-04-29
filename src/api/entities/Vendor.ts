@@ -1,4 +1,4 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
 
 import { mergeByKeys, snackCase } from "@app/lib/utils/functions";
 import { User } from "./User";
@@ -36,10 +36,17 @@ export class Vendor {
   @ManyToOne(() => User, user => user.vendors, {
     nullable: true,
   })
-  public createdBy: Promise<User>;
+  public createdBy: Promise<User> | User;
 
   @OneToMany(() => Product, product => product.vendor)
-  public products: Promise<Product[]>;
+  public products: Promise<Product[]> | Product[];
+
+  @BeforeInsert()
+  public async beforeInsert(): Promise<void> {
+    if (!this.code) {
+      this.code = snackCase(this.name);
+    }
+  }
 
   public static fromData(data: { [prop: string]: any }): Vendor {
     return Vendor.updateData(new Vendor(), data);

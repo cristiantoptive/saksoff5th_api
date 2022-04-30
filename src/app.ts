@@ -1,5 +1,6 @@
-import { createConnection, useContainer as ormUseContainer } from "typeorm";
+import { Connection, createConnection, useContainer as ormUseContainer } from "typeorm";
 import { createExpressServer, getMetadataArgsStorage, useContainer } from "routing-controllers";
+import { createHttpTerminator } from "http-terminator";
 import { Container } from "typedi";
 
 import { routingControllersToSpec } from "routing-controllers-openapi";
@@ -15,9 +16,11 @@ import { env } from "./env";
 ormUseContainer(Container);
 useContainer(Container);
 
-createConnection()
-  .then(() => {
-    console.log("DB Connected. Now run express app");
+export default createConnection()
+  .then((connection: Connection) => {
+    if (!env.isTest) {
+      console.log("DB Connected. Now run express app");
+    }
 
     // app options
     const routingControllersOptions = {
@@ -37,9 +40,9 @@ createConnection()
        * We can add options about how routing-controllers should configure itself.
        * Here we specify what controllers should be registered in our express server.
        */
-      controllers: [`${__dirname }/api/controllers/*.${env.isDevelopment ? "ts" : "js"}`],
-      middlewares: [`${__dirname }/api/middlewares/*.${env.isDevelopment ? "ts" : "js"}`],
-      interceptors: [`${__dirname }/api/interceptors/*.${env.isDevelopment ? "ts" : "js"}`],
+      controllers: [`${__dirname }/api/controllers/*.${env.isDevelopment || env.isTest ? "ts" : "js"}`],
+      middlewares: [`${__dirname }/api/middlewares/*.${env.isDevelopment || env.isTest ? "ts" : "js"}`],
+      interceptors: [`${__dirname }/api/interceptors/*.${env.isDevelopment || env.isTest ? "ts" : "js"}`],
 
       /**
        * Authorization features
@@ -52,30 +55,43 @@ createConnection()
     const app = createExpressServer(routingControllersOptions);
 
     // Parse routing-controllers classes into OpenAPI spec:
-    const spec = routingControllersToSpec(getMetadataArgsStorage(), routingControllersOptions, {
-      components: {
-        // Parse class-validator classes into JSON Schema:
-        schemas: validationMetadatasToSchemas({
-          classTransformerMetadataStorage: defaultMetadataStorage,
-          refPointerPrefix: "#/components/schemas/",
-        }),
-        securitySchemes: {
-          bearerAuth: {
-            type: "http",
-            scheme: "bearer",
-            bearerFormat: "jwt",
+    if (!env.isTest) {
+      const spec = routingControllersToSpec(getMetadataArgsStorage(), routingControllersOptions, {
+        components: {
+          // Parse class-validator classes into JSON Schema:
+          schemas: validationMetadatasToSchemas({
+            classTransformerMetadataStorage: defaultMetadataStorage,
+            refPointerPrefix: "#/components/schemas/",
+          }),
+          securitySchemes: {
+            bearerAuth: {
+              type: "http",
+              scheme: "bearer",
+              bearerFormat: "jwt",
+            },
           },
         },
-      },
-      info: {
-        description: "API specs for SaksOff5th app",
-        title: "SaksOff5th API",
-        version: "1.0.0",
-      },
-    });
-    app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(spec));
+        info: {
+          description: "API specs for SaksOff5th app",
+          title: "SaksOff5th API",
+          version: "1.0.0",
+        },
+      });
+      app.use("/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(spec));
+    }
 
-    app.listen(env.app.port);
-    console.log(`Server is up and running on port ${env.app.port}. Now send requests to check if everything works.`);
+    const server = app.listen(env.app.port, () => {
+      if (!env.isTest) {
+        console.log(`Server is up and running on port ${env.app.port}. Now send requests to check if everything works.`);
+      }
+    });
+
+    const httpTerminator = createHttpTerminator({ server });
+    app.stop = () => httpTerminator.terminate();
+
+    return {
+      express: app,
+      connection,
+    };
   })
   .catch(error => console.log("Error: ", error));

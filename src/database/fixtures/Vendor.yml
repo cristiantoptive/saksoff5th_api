@@ -1,5 +1,6 @@
 entity: Vendor
 items:
   vendor1:
-    name: 'Vendor 1'
+    id: 028987da-de88-4714-ab15-8c6f487a18bf
+    name: Vendor 1
     createdBy: '@user2'

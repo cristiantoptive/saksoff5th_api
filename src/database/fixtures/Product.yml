@@ -1,12 +1,13 @@
 entity: Product
 items:
   product1:
-    SKU: 'PRODUCT_1'
-    title: 'Product 1'
-    description: 'Product 1 description'
+    id: 9335113d-552b-4e86-bd33-e74315c7b30a
+    SKU: PRODUCT_1
+    title: Product 1
+    description: Product 1 description
     price: 76.03
     inventory: 25
-    deliveryTime: '1 week'
+    deliveryTime: 1 week
     isActive: true
     createdBy: '@user2'
     vendor: '@vendor1'

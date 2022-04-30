@@ -1,24 +1,28 @@
 entity: User
 items:
   user1:
+    id: 2c3b4021-ae5d-400f-b2ec-14078dfa0ad5
     email: admin@admin.com
     password: admin123
     role: admin
     firstName: Cristian
     lastName: Tardivo
   user2:
+    id: 8c42f6d1-9dad-4098-a448-a4f73cdb7f40
     email: merchandiser1@merchandiser.com
     password: merchandiser123
     role: merchandiser
     firstName: '{{name.firstName}}'
     lastName: '{{name.lastName}}'
   user3:
+    id: 8c817cac-0d0c-437f-89ba-9edc234792a7
     email: customer1@customer.com
     password: customer123
     role: customer
     firstName: '{{name.firstName}}'
     lastName: '{{name.lastName}}'
   user4:
+    id: 27498d2e-ec7e-4981-9595-75cb2405a85f
     email: customer2@customer.com
     password: customer123
     role: customer

@@ -11,6 +11,10 @@ export class LogMiddleware implements ExpressMiddlewareInterface {
   private log = new Logger(__dirname);
 
   public use(req: Request, res: Response, next: NextFunction): any {
+    if (env.isTest) {
+      return next();
+    }
+
     return morgan(env.log.output, {
       stream: {
         write: this.log.info.bind(this.log),

@@ -1,4 +1,4 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, Unique } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, Unique, BeforeInsert } from "typeorm";
 
 import { mergeByKeys, snackCase } from "@app/lib/utils/functions";
 import { Product } from "./Product";
@@ -34,7 +34,14 @@ export class ProductCategory {
   public updatedOn: Date;
 
   @OneToMany(() => Product, product => product.category)
-  public products: Promise<Product[]>;
+  public products: Promise<Product[]> | Product[];
+
+  @BeforeInsert()
+  public async beforeInsert(): Promise<void> {
+    if (!this.code) {
+      this.code = snackCase(this.name);
+    }
+  }
 
   public static fromData(data: { [prop: string]: any }): ProductCategory {
     return ProductCategory.updateData(new ProductCategory(), data);

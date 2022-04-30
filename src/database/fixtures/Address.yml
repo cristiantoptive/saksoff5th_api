@@ -1,0 +1,19 @@
+entity: Address
+items:
+  address1:
+    type: 'shipping'
+    line1: '{{address.streetAddress}}'
+    line2: '{{address.secondaryAddress}}'
+    city: '{{address.cityName}}'
+    state: '{{address.state}}'
+    zipcode: '{{address.zipCode}}'
+    country: '{{address.country}}'
+    user: '@user3'
+  address2:
+    type: 'billing'
+    line1: '{{address.streetAddress}}'
+    city: '{{address.cityName}}'
+    state: '{{address.state}}'
+    zipcode: '{{address.zipCode}}'
+    country: '{{address.country}}'
+    user: '@user3'

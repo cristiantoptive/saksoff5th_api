@@ -1,0 +1,8 @@
+entity: ProductCategory
+items:
+  category1:
+    name: Shoes
+  category2:
+    name: Handbags
+  category3:
+    name: Beauty

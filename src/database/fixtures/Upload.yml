@@ -1,0 +1,11 @@
+entity: Upload
+processor: ../processor/UploadProcessor
+items:
+  upload1:
+    relatedTo: 'product'
+    name: 'product1_image1.jpeg'
+    type: 'image/jpeg'
+    size: 0
+    s3Object: null
+    product: '@product1'
+    createdBy: '@user2'

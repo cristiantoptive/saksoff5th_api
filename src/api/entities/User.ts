@@ -63,22 +63,22 @@ export class User {
   public updatedOn: Date;
 
   @OneToMany(() => Address, address => address.user)
-  public addresses: Promise<Address[]>;
+  public addresses: Promise<Address[]> | Address[];
 
   @OneToMany(() => Card, card => card.user)
-  public cards: Promise<Card[]>;
+  public cards: Promise<Card[]> | Card[];
 
   @OneToMany(() => Vendor, vendor => vendor.createdBy)
-  public vendors: Promise<Vendor[]>;
+  public vendors: Promise<Vendor[]> | Vendor[];
 
   @OneToMany(() => Product, product => product.createdBy)
-  public products: Promise<Product[]>;
+  public products: Promise<Product[]> | Product[];
 
   @OneToMany(() => Upload, upload => upload.createdBy)
-  public uploads: Promise<Upload[]>;
+  public uploads: Promise<Upload[]> | Upload[];
 
   @OneToMany(() => Order, order => order.placedBy)
-  public orders: Promise<Order[]>;
+  public orders: Promise<Order[]> | Order[];
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

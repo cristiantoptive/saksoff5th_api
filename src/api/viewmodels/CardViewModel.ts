@@ -1,0 +1,30 @@
+import { IsString, IsDate } from "class-validator";
+import { JSONSchema } from "class-validator-jsonschema";
+import { ViewModel } from "./ViewModel";
+import { Card } from "@app/api/entities/Card";
+
+@JSONSchema({
+  description: "Card view model",
+})
+export class CardViewModel extends ViewModel {
+  @IsString()
+  public id: string;
+
+  @IsString()
+  public name: string;
+
+  @IsString()
+  public number: string;
+
+  @IsDate()
+  public expiresOn: Date;
+
+  public construct(card: Card): Promise<CardViewModel> {
+    return super.mapObjectKeys({
+      id: card.id,
+      name: card.name,
+      number: card.number,
+      expiresOn: card.expiresOn,
+    });
+  }
+}

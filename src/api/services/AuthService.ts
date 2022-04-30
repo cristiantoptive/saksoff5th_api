@@ -6,7 +6,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { UserRepository } from "@app/api/repositories/UserRepository";
 import { User } from "@app/api/entities/User";
 import { Roles } from "@app/api/types/Roles";
-import { ChangePasswordCommand, SignupCommand } from "@app/api/commands/auth";
+import { ChangePasswordCommand, SignupCommand } from "@app/api/commands";
 import { UserAlreadyExistsError, InvalidPasswordError } from "@app/api/errors";
 
 import { env } from "@app/env";
@@ -35,7 +35,7 @@ export class AuthService {
       throw new UserAlreadyExistsError();
     }
 
-    const user = User.fromData({ ...command, role: Roles.Admin });
+    const user = User.fromData({ ...command, role: Roles.Customer });
     return this.userRepository.save(user);
   }
 

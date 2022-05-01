@@ -36,7 +36,7 @@ describe("App should return existing vendors from fixtures", () => {
         }
 
         expect(res.body)
-          .toHaveLength(1);
+          .toHaveLength(2);
 
         done();
       });

@@ -1,18 +1,15 @@
-import { Inject, Service } from "typedi";
+import { Service } from "typedi";
 import { DeleteResult } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { Product } from "@app/api/entities/Product";
 import { User } from "@app/api/entities/User";
 import { ProductRepository } from "@app/api/repositories";
-import { VendorService, ProductCategoryService } from "@app/api/services";
 import { ProductCommand } from "@app/api/commands";
 
 @Service()
 export class ProductsService {
   @InjectRepository() private productsRepository: ProductRepository;
-  @Inject() private vendorsService: VendorService;
-  @Inject() private categoriesService: ProductCategoryService;
 
   public all(user?: User, onlyMine?: boolean): Promise<Product[]> {
     if (!onlyMine) {
@@ -52,8 +49,8 @@ export class ProductsService {
       inventory: command.inventory,
       deliveryTime: command.deliveryTime,
       isActive: command.isActive,
-      vendor: await this.vendorsService.find(command.vendor, user),
-      category: await this.categoriesService.find(command.category),
+      vendor: command.vendor,
+      category: command.category,
       createdBy: user,
     });
 
@@ -71,8 +68,8 @@ export class ProductsService {
       inventory: command.inventory,
       deliveryTime: command.deliveryTime,
       isActive: command.isActive,
-      vendor: await this.vendorsService.find(command.vendor, user),
-      category: await this.categoriesService.find(command.category),
+      vendor: command.vendor,
+      category: command.category,
     });
 
     return this.productsRepository.save(product);

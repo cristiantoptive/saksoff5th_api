@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsNumber, Min, IsUUID, IsOptional, IsString, MaxLength, IsBoolean } from "class-validator";
+import { EntityMustExists } from "@app/api/validators";
+import { ProductCategory } from "@app/api/entities/ProductCategory";
+import { Vendor } from "@app/api/entities/Vendor";
+import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
-export class ProductCommand {
+export class ProductCommand extends AuthenticatedCommand {
   @IsString()
   @IsNotEmpty({
     message: "Product SKU is required",
@@ -64,10 +68,19 @@ export class ProductCommand {
   @IsUUID(4, {
     message: "Product Vendor must be a valid vendor uuid",
   })
-  public vendor: string;
+  @EntityMustExists(Vendor, {
+    mustMatch: {
+      createdBy: "@currentUser",
+    },
+    message: "Vendor does not exists or does not belongs to the current user",
+  })
+  public vendor: Vendor;
 
   @IsUUID(4, {
     message: "Product category must be a valid category uuid",
   })
-  public category: string;
+  @EntityMustExists(ProductCategory, {
+    message: "Category does not exists",
+  })
+  public category: ProductCategory;
 }

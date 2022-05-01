@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmailIsAlreadyInUse } from "@app/api/validators";
 
 export class SignupCommand {
   @IsEmail({}, {
@@ -6,6 +7,9 @@ export class SignupCommand {
   })
   @IsNotEmpty({
     message: "Email address is required",
+  })
+  @IsEmailIsAlreadyInUse({
+    message: "Email address is alredy in use by another user",
   })
   public email: string;
 

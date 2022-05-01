@@ -1,5 +1,6 @@
 import { Connection, createConnection, useContainer as ormUseContainer } from "typeorm";
-import { createExpressServer, getMetadataArgsStorage, useContainer } from "routing-controllers";
+import { createExpressServer, getMetadataArgsStorage, RoutingControllersOptions, useContainer } from "routing-controllers";
+import { useContainer as validatorUseContainer } from "class-validator";
 import { createHttpTerminator } from "http-terminator";
 import { Container } from "typedi";
 
@@ -15,6 +16,10 @@ import { env } from "./env";
 
 ormUseContainer(Container);
 useContainer(Container);
+validatorUseContainer(Container, {
+  fallback: true,
+  fallbackOnErrors: true,
+});
 
 export default createConnection()
   .then((connection: Connection) => {
@@ -23,7 +28,7 @@ export default createConnection()
     }
 
     // app options
-    const routingControllersOptions = {
+    const routingControllersOptions: RoutingControllersOptions = {
       cors: {
         origin: "*", // maybe we could read the allowed origins from .env file and allow only knows domains
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

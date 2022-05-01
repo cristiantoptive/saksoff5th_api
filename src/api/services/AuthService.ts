@@ -7,13 +7,12 @@ import { UserRepository } from "@app/api/repositories/UserRepository";
 import { User } from "@app/api/entities/User";
 import { Roles } from "@app/api/types/Roles";
 import { ChangePasswordCommand, SignupCommand } from "@app/api/commands";
-import { UserAlreadyExistsError, InvalidPasswordError } from "@app/api/errors";
 
 import { env } from "@app/env";
 
 @Service()
 export class AuthService {
-  @InjectRepository() private userRepository: UserRepository
+  @InjectRepository() private userRepository: UserRepository;
 
   public parseAuthFromRequest(req: Request): string {
     const authorization = (req.header("authorization") || "").split(" ");
@@ -30,11 +29,6 @@ export class AuthService {
   }
 
   public async createUser(command: SignupCommand): Promise<User> {
-    const existingUser = await this.userRepository.findOne({ email: command.email });
-    if (existingUser) {
-      throw new UserAlreadyExistsError();
-    }
-
     const user = User.fromData({ ...command, role: Roles.Customer });
     return this.userRepository.save(user);
   }
@@ -63,13 +57,10 @@ export class AuthService {
   }
 
   public async changePassword(user: User, passwords: ChangePasswordCommand): Promise<User> {
-    if (await User.comparePassword(user, passwords.oldPassword)) {
-      User.updateData(user, {
-        password: await User.hashPassword(passwords.newPassword),
-      });
-      return this.userRepository.save(user);
-    } else {
-      throw new InvalidPasswordError("The old password doesn't match the current user password");
-    }
+    User.updateData(user, {
+      password: await User.hashPassword(passwords.newPassword),
+    });
+
+    return this.userRepository.save(user);
   }
 }

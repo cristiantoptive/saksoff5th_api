@@ -1,5 +1,4 @@
 import * as bcrypt from "bcrypt";
-import { Exclude } from "class-transformer";
 import { BeforeInsert, Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, Unique } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
@@ -29,7 +28,6 @@ export class User {
     type: "varchar",
     length: 255,
   })
-  @Exclude()
   public password: string;
 
   @Column({

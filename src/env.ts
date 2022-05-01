@@ -33,7 +33,6 @@ export const env = {
     schema: getOsEnv("APP_SCHEMA"),
     routePrefix: getOsEnv("APP_ROUTE_PREFIX"),
     port: normalizePort(process.env.PORT || getOsEnv("APP_PORT")),
-    allowSignup: toBool(getOsEnv("APP_ALLOW_SIGNUP")),
     jtwSecret: getOsEnv("APP_JWT_SECRET"),
     jtwExpires: getOsEnv("APP_JWT_EXPIRES"),
   },

@@ -1,4 +1,4 @@
-import { Inject, Service } from "typedi";
+import { Service } from "typedi";
 import { DeleteResult } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
@@ -7,18 +7,12 @@ import { OrderItem } from "@app/api/entities/OrderItem";
 import { User } from "@app/api/entities/User";
 import { OrderRepository, OrderItemRepository } from "@app/api/repositories";
 import { OrderCommand } from "@app/api/commands";
-import { AddressTypes, OrderStatuses } from "@app/api/types";
-import { AddressService } from "./AddressService";
-import { CardsService } from "./CardsService";
-import { ProductsService } from "./ProductsService";
+import { OrderStatuses } from "@app/api/types";
 
 @Service()
 export class OrderService {
   @InjectRepository() private orderRepository: OrderRepository;
   @InjectRepository() private orderItemRepository: OrderItemRepository;
-  @Inject() private addressesService: AddressService;
-  @Inject() private cardsService: CardsService;
-  @Inject() private productsService: ProductsService;
 
   public all(user: User): Promise<Order[]> {
     return this.orderRepository.find({
@@ -45,9 +39,9 @@ export class OrderService {
     const order = Order.fromData({
       status: OrderStatuses.Placed,
       placedBy: user,
-      shippingAddress: await this.addressesService.find(command.shippingAddress, user, AddressTypes.Shipping),
-      billingAddress: await this.addressesService.find(command.billingAddress, user, AddressTypes.Billing),
-      paymentCard: await this.cardsService.find(command.card, user),
+      shippingAddress: command.shippingAddress,
+      billingAddress: command.billingAddress,
+      paymentCard: command.card,
     });
 
     await this.orderRepository.save(order);
@@ -63,9 +57,9 @@ export class OrderService {
     }
 
     Order.updateData(order, {
-      shippingAddress: await this.addressesService.find(command.shippingAddress, user, AddressTypes.Shipping),
-      billingAddress: await this.addressesService.find(command.billingAddress, user, AddressTypes.Billing),
-      paymentCard: await this.cardsService.find(command.card, user),
+      shippingAddress: command.shippingAddress,
+      billingAddress: command.billingAddress,
+      paymentCard: command.card,
     });
 
     await this.orderRepository.save(order);
@@ -90,20 +84,18 @@ export class OrderService {
 
   private async createOrderItems(order: Order, command: OrderCommand) {
     for (const item of command.items) {
-      const product = await this.productsService.find(item.product);
-
-      if (product.inventory < item.quantity) {
-        throw new Error(`There are not enough inventory for product ${product.title}`);
+      if (item.product.inventory < item.quantity) {
+        throw new Error(`There are not enough inventory for product ${item.product.title}`);
       }
 
-      if (!product.isActive) {
-        throw new Error(`Product ${product.title} is not available anymore`);
+      if (!item.product.isActive) {
+        throw new Error(`Product ${item.product.title} is not available anymore`);
       }
 
       await this.orderItemRepository.save(OrderItem.fromData({
-        price: product.price,
+        product: item.product,
         quantity: item.quantity,
-        product,
+        price: item.product.price * item.quantity,
         order,
       }));
     }

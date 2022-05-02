@@ -1,4 +1,6 @@
 entity: Vendor
+resolvedFields: ["createdBy"]
+processor: ../processor/VendorProcessor
 items:
   vendor1:
     id: 028987da-de88-4714-ab15-8c6f487a18bf

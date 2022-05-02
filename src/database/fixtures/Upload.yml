@@ -1,4 +1,5 @@
 entity: Upload
+resolvedFields: ["product", "createdBy"]
 processor: ../processor/UploadProcessor
 items:
   upload1:

@@ -1,4 +1,6 @@
 entity: Product
+resolvedFields: ["createdBy", "vendor", "category"]
+processor: ../processor/ProductProcessor
 items:
   product1:
     id: 9335113d-552b-4e86-bd33-e74315c7b30a
@@ -12,3 +14,14 @@ items:
     createdBy: '@user2'
     vendor: '@vendor1'
     category: '@category1'
+  product2:
+    id: 1575113c-552b-4f86-bd99-e74315c7b75a
+    SKU: PRODUCT_2
+    title: Product 2
+    price: 2.53
+    inventory: 14
+    deliveryTime: 3 days
+    isActive: false
+    createdBy: '@user5'
+    vendor: '@vendor2'
+    category: '@category3'

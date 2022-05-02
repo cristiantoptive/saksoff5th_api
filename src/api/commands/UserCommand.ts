@@ -1,5 +1,5 @@
-import { Roles, UserRoles } from "@app/api/types";
 import { IsEnum, IsNotEmpty } from "class-validator";
+import { Roles, UserRoles } from "@app/api/types";
 
 export class UserCommand {
   @IsNotEmpty({

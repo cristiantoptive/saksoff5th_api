@@ -83,16 +83,16 @@ export class Address {
   public updatedOn: Date;
 
   @ManyToOne(() => User, user => user.addresses, {
-    onDelete: "CASCADE",
     nullable: false,
+    onDelete: "CASCADE",
   })
-  public user: Promise<User> | User;
+  public user: Promise<User>;
 
   @OneToMany(() => Order, order => order.shippingAddress)
-  public usedForOrderShipping: Promise<Order[]> | Order[];
+  public usedForOrderShipping: Promise<Order[]>;
 
   @OneToMany(() => Order, order => order.shippingAddress)
-  public usedForOrderBilling: Promise<Order[]> | Order[];
+  public usedForOrderBilling: Promise<Order[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

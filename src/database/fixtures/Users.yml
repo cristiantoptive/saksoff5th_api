@@ -1,4 +1,6 @@
 entity: User
+resolvedFields: []
+processor: ../processor/UserProcessor
 items:
   user1:
     id: 2c3b4021-ae5d-400f-b2ec-14078dfa0ad5

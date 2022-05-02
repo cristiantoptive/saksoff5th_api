@@ -30,13 +30,13 @@ export class OrderItem {
     nullable: true,
     onDelete: "SET NULL",
   })
-  public product: Promise<Product> | Product;
+  public product: Promise<Product>;
 
   @ManyToOne(() => Order, order => order.items, {
     nullable: false,
     onDelete: "CASCADE",
   })
-  public order: Promise<Order> | Order;
+  public order: Promise<Order>;
 
   public static fromData(data: { [prop: string]: any }): OrderItem {
     return OrderItem.updateData(new OrderItem(), data);

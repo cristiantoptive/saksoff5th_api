@@ -34,7 +34,7 @@ export class ProductCategory {
   public updatedOn: Date;
 
   @OneToMany(() => Product, product => product.category)
-  public products: Promise<Product[]> | Product[];
+  public products: Promise<Product[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

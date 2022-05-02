@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cd ./dist && cross-env NODE_ENV=production node ./src/app.js",
     "dev": "nodemon .",
-    "test": "cross-env NODE_ENV=test jest --runInBand --verbose",
+    "test": "cross-env NODE_ENV=test jest --runInBand --verbose --detectOpenHandles",
     "prebuild": "tsc --version && rm -rf ./dist",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "postbuild": "cp ormconfig.prod.json ./dist/ormconfig.json && cp .env.prod ./dist/.env && cp -r node_modules ./dist/node_modules && cd ./dist && node --require ts-node/register --require tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run",

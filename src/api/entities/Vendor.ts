@@ -36,10 +36,10 @@ export class Vendor {
   @ManyToOne(() => User, user => user.vendors, {
     nullable: true,
   })
-  public createdBy: Promise<User> | User;
+  public createdBy: Promise<User>;
 
   @OneToMany(() => Product, product => product.vendor)
-  public products: Promise<Product[]> | Product[];
+  public products: Promise<Product[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

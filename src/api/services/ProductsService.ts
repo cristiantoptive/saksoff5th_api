@@ -13,7 +13,9 @@ export class ProductsService {
 
   public all(user?: User, onlyMine?: boolean): Promise<Product[]> {
     if (!onlyMine) {
-      return this.productsRepository.find();
+      return this.productsRepository.find({
+        isActive: true,
+      });
     }
 
     return this.productsRepository.find({
@@ -27,7 +29,7 @@ export class ProductsService {
 
   public find(id: string, user?: User): Promise<Product | undefined> {
     if (!user) {
-      this.productsRepository.findOneOrFail(id);
+      return this.productsRepository.findOneOrFail(id);
     }
 
     return this.productsRepository.findOneOrFail({

@@ -32,31 +32,31 @@ export class Order {
     nullable: true,
     onDelete: "SET NULL",
   })
-  public placedBy: Promise<User> | User;
+  public placedBy: Promise<User>;
 
   @ManyToOne(() => Address, address => address.usedForOrderShipping, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
-  public shippingAddress: Promise<Address> | Address;
+  public shippingAddress: Promise<Address>;
 
   @ManyToOne(() => Address, address => address.usedForOrderBilling, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
-  public billingAddress: Promise<Address> | Address;
+  public billingAddress: Promise<Address>;
 
   @ManyToOne(() => Card, card => card.usedForOrder, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
-  public paymentCard: Promise<Card> | Card;
+  public paymentCard: Promise<Card>;
 
   @OneToMany(() => OrderItem, orderItem => orderItem.order)
-  public items: Promise<OrderItem[]> | OrderItem[];
+  public items: Promise<OrderItem[]>;
 
   public static fromData(data: { [prop: string]: any }): Order {
     return Order.updateData(new Order(), data);

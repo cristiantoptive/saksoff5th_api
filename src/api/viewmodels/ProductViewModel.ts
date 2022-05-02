@@ -54,7 +54,7 @@ export class ProductViewModel extends ViewModel {
       title: product.title,
       description: product.description,
       price: product.price,
-      inventory: product.inventory,
+      inventory: parseInt(product.inventory as unknown as string),
       deliveryTime: product.deliveryTime,
       isActive: product.isActive,
       vendor: ViewModel.createOne(VendorViewModel, product.vendor),

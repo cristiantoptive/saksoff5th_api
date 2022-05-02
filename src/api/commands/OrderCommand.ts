@@ -1,17 +1,21 @@
 import { IsInstance, IsArray, IsNumber, IsUUID, Min } from "class-validator";
+import { MoreThan } from "typeorm";
 import { EntityMustExists } from "@app/api/validators";
 import { Address } from "@app/api/entities/Address";
-import { Card } from "../entities/Card";
-import { Product } from "../entities/Product";
-import { AddressTypes } from "../types";
+import { Card } from "@app/api/entities/Card";
+import { Product } from "@app/api/entities/Product";
+import { AddressTypes } from "@app/api/types";
 import { AuthenticatedCommand } from "./AuthenticatedCommand";
-
 export class OrderItemCommand {
   @IsUUID(4, {
     message: "Product must be a valid product uuid",
   })
   @EntityMustExists(Product, {
-    message: "Product does not exists",
+    mustMatch: {
+      inventory: MoreThan(0),
+      isActive: true,
+    },
+    message: "Product does not exists or is inactive or there are no more stock available",
   })
   public product: Product;
 

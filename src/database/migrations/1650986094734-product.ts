@@ -40,7 +40,7 @@ export class product1650986094734 implements MigrationInterface {
           },
           {
             name: "inventory",
-            type: "bigint",
+            type: "int",
             isNullable: false,
           },
           {
@@ -51,7 +51,7 @@ export class product1650986094734 implements MigrationInterface {
           },
           {
             name: "isActive",
-            type: "bit",
+            type: "tinyint",
             isNullable: false,
           },
           {

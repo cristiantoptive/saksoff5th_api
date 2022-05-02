@@ -40,13 +40,13 @@ export class Card {
   public updatedOn: Date;
 
   @ManyToOne(() => User, user => user.cards, {
-    onDelete: "CASCADE",
     nullable: false,
+    onDelete: "CASCADE",
   })
-  public user: Promise<User> | User;
+  public user: Promise<User>;
 
   @OneToMany(() => Order, order => order.paymentCard)
-  public usedForOrder: Promise<Order[]> | Order[];
+  public usedForOrder: Promise<Order[]>;
 
   public static fromData(data: { [prop: string]: any }): Card {
     return Card.updateData(new Card(), data);

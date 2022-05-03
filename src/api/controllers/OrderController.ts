@@ -13,12 +13,12 @@ export class OrderController {
   @Inject() private ordersService: OrderService;
 
   @Get()
-  public async all(@CurrentUser() user: User): Promise<OrderViewModel[]> {
+  public all(@CurrentUser() user: User): Promise<OrderViewModel[]> {
     return ViewModel.createMany(OrderViewModel, this.ordersService.all(user));
   }
 
   @Get("/:id")
-  public async one(@CurrentUser() user: User, @Param("id") id: string): Promise<OrderViewModel> {
+  public one(@CurrentUser() user: User, @Param("id") id: string): Promise<OrderViewModel> {
     return ViewModel.createOne(OrderViewModel, this.ordersService.find(id, user));
   }
 

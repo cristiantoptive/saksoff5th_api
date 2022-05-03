@@ -40,13 +40,15 @@ export class VendorService {
     });
   }
 
-  public create(command: VendorCommand, user: User): Promise<Vendor> {
-    const vendor = Vendor.fromData({
-      name: command.name,
-      createdBy: user,
-    });
+  public async create(command: VendorCommand, user: User): Promise<Vendor> {
+    const vendor = this.vendorRepository.create(
+      Vendor.fromData({
+        name: command.name,
+        createdBy: user,
+      }),
+    );
 
-    return this.vendorRepository.save(vendor);
+    return await this.vendorRepository.save(vendor);
   }
 
   public async update(id: string, command: VendorCommand, user: User): Promise<Vendor> {

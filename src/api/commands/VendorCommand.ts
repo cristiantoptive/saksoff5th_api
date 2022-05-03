@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
-export class VendorCommand {
+export class VendorCommand extends AuthenticatedCommand {
   @IsString()
   @IsNotEmpty({
     message: "Vendor name is required",

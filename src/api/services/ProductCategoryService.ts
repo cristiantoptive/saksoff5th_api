@@ -19,9 +19,11 @@ export class ProductCategoryService {
   }
 
   public create(command: ProductCategoryCommand): Promise<ProductCategory> {
-    const category = ProductCategory.fromData({
-      name: command.name,
-    });
+    const category = this.categoryRepository.create(
+      ProductCategory.fromData({
+        name: command.name,
+      }),
+    );
 
     return this.categoryRepository.save(category);
   }

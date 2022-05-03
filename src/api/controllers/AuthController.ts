@@ -27,7 +27,7 @@ export class AuthController {
   @Post("/signup")
   @OpenAPI({ summary: "Register a new user" })
   @ResponseSchema(UserViewModel)
-  public async signup(@Body() command: SignupCommand): Promise<UserViewModel> {
+  public signup(@Body() command: SignupCommand): Promise<UserViewModel> {
     return ViewModel.createOne(UserViewModel, this.authService.createUser(command));
   }
 
@@ -35,7 +35,7 @@ export class AuthController {
   @Authorized()
   @OpenAPI({ summary: "Return authenticated user data", security: [{ bearerAuth: [] }] })
   @ResponseSchema(UserViewModel)
-  public async current(@CurrentUser() user: User): Promise<UserViewModel> {
+  public current(@CurrentUser() user: User): Promise<UserViewModel> {
     return ViewModel.createOne(UserViewModel, user);
   }
 

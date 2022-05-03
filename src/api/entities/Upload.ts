@@ -59,7 +59,7 @@ export class Upload {
   })
   public product: Promise<Product>;
 
-  @ManyToOne(() => User, user => user.uploads, {
+  @ManyToOne(() => User, {
     nullable: true,
     onDelete: "SET NULL",
   })

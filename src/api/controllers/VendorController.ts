@@ -13,12 +13,12 @@ export class VendorController {
   @Inject() private vendorsService: VendorService;
 
   @Get()
-  public async all(@CurrentUser({ required: false }) user?: User, @QueryParam("onlyMine") onlyMine?: boolean): Promise<VendorViewModel[]> {
+  public all(@CurrentUser({ required: false }) user?: User, @QueryParam("onlyMine") onlyMine?: boolean): Promise<VendorViewModel[]> {
     return ViewModel.createMany(VendorViewModel, this.vendorsService.all(user, onlyMine));
   }
 
   @Get("/:id")
-  public async one(@Param("id") id: string): Promise<VendorViewModel> {
+  public one(@Param("id") id: string): Promise<VendorViewModel> {
     return ViewModel.createOne(VendorViewModel, this.vendorsService.find(id));
   }
 

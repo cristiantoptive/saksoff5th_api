@@ -1,11 +1,11 @@
 import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
-import { User } from "./User";
 import { OrderStatuses } from "@app/api/types";
+import { User } from "./User";
+import { OrderItem } from "./OrderItem";
 import { Address } from "./Address";
 import { Card } from "./Card";
-import { OrderItem } from "./OrderItem";
 
 @Entity()
 export class Order {
@@ -28,27 +28,27 @@ export class Order {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, user => user.orders, {
+  @ManyToOne(() => User, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public placedBy: Promise<User>;
 
-  @ManyToOne(() => Address, address => address.usedForOrderShipping, {
+  @ManyToOne(() => Address, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
   public shippingAddress: Promise<Address>;
 
-  @ManyToOne(() => Address, address => address.usedForOrderBilling, {
+  @ManyToOne(() => Address, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
   public billingAddress: Promise<Address>;
 
-  @ManyToOne(() => Card, card => card.usedForOrder, {
+  @ManyToOne(() => Card, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",

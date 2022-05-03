@@ -14,7 +14,11 @@ export class ProductsService {
   public all(user?: User, onlyMine?: boolean): Promise<Product[]> {
     if (!onlyMine) {
       return this.productsRepository.find({
-        isActive: true,
+        where: [
+          {
+            isActive: true,
+          },
+        ],
       });
     }
 
@@ -43,18 +47,20 @@ export class ProductsService {
   }
 
   public async create(command: ProductCommand, user: User): Promise<Product> {
-    const product = Product.fromData({
-      SKU: command.SKU,
-      title: command.title,
-      description: command.description,
-      price: command.price,
-      inventory: command.inventory,
-      deliveryTime: command.deliveryTime,
-      isActive: command.isActive,
-      vendor: command.vendor,
-      category: command.category,
-      createdBy: user,
-    });
+    const product = this.productsRepository.create(
+      Product.fromData({
+        SKU: command.SKU,
+        title: command.title,
+        description: command.description,
+        price: command.price,
+        inventory: command.inventory,
+        deliveryTime: command.deliveryTime,
+        isActive: command.isActive,
+        vendor: command.vendor,
+        category: command.category,
+        createdBy: user,
+      }),
+    );
 
     return this.productsRepository.save(product);
   }

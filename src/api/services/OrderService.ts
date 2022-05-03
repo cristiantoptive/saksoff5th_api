@@ -36,13 +36,15 @@ export class OrderService {
   }
 
   public async create(command: OrderCommand, user: User): Promise<Order> {
-    const order = Order.fromData({
-      status: OrderStatuses.Placed,
-      placedBy: user,
-      shippingAddress: command.shippingAddress,
-      billingAddress: command.billingAddress,
-      paymentCard: command.card,
-    });
+    const order = this.orderRepository.create(
+      Order.fromData({
+        status: OrderStatuses.Placed,
+        placedBy: user,
+        shippingAddress: command.shippingAddress,
+        billingAddress: command.billingAddress,
+        paymentCard: command.card,
+      }),
+    );
 
     await this.orderRepository.save(order);
     await this.createOrderItems(order, command);
@@ -92,12 +94,16 @@ export class OrderService {
         throw new Error(`Product ${item.product.title} is not available anymore`);
       }
 
-      await this.orderItemRepository.save(OrderItem.fromData({
-        product: item.product,
-        quantity: item.quantity,
-        price: item.product.price * item.quantity,
-        order,
-      }));
+      const orderItem = this.orderItemRepository.create(
+        OrderItem.fromData({
+          product: item.product,
+          quantity: item.quantity,
+          price: item.product.price * item.quantity,
+          order,
+        }),
+      );
+
+      await this.orderItemRepository.save(orderItem);
     }
   }
 }

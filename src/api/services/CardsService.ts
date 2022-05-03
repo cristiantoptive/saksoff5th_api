@@ -33,12 +33,14 @@ export class CardsService {
   }
 
   public create(command: CardCommand, user: User): Promise<Card> {
-    const card = Card.fromData({
-      user: user,
-      name: command.name,
-      number: command.number,
-      expiresOn: command.expiresOn,
-    });
+    const card = this.cardsRepository.create(
+      Card.fromData({
+        user: user,
+        name: command.name,
+        number: command.number,
+        expiresOn: command.expiresOn,
+      }),
+    );
 
     return this.cardsRepository.save(card);
   }

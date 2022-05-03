@@ -6,11 +6,11 @@
   "scripts": {
     "start": "cd ./dist && cross-env NODE_ENV=production node ./src/app.js",
     "dev": "nodemon .",
-    "test": "cross-env NODE_ENV=test jest --runInBand --verbose --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --runInBand --verbose",
     "prebuild": "tsc --version && rm -rf ./dist",
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "postbuild": "cp ormconfig.prod.json ./dist/ormconfig.json && cp .env.prod ./dist/.env && cp -r node_modules ./dist/node_modules && cd ./dist && node --require ts-node/register --require tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run",
-    "typeorm": "node --require ts-node/register --require tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "typeorm": "cross-env NODE_ENV=development node --require ts-node/register --require tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "migration:run": "cross-env NODE_ENV=development npm run typeorm migration:run",

@@ -23,8 +23,8 @@ describe("App auth process should work", () => {
 
   afterAll(async() => {
     // close connections and stop server
-    await connection.close();
     await (express as any).stop();
+    await connection.close();
   });
 
   it("Signin should work for a valid admin user", (done) => {

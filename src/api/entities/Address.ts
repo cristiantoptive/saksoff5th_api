@@ -1,9 +1,8 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, BeforeInsert, ManyToOne } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
 import { AddressTypes } from "@app/api/types";
 import { User } from "./User";
-import { Order } from "./Order";
 
 @Entity()
 export class Address {
@@ -82,17 +81,11 @@ export class Address {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, user => user.addresses, {
+  @ManyToOne(() => User, {
     nullable: false,
     onDelete: "CASCADE",
   })
   public user: Promise<User>;
-
-  @OneToMany(() => Order, order => order.shippingAddress)
-  public usedForOrderShipping: Promise<Order[]>;
-
-  @OneToMany(() => Order, order => order.shippingAddress)
-  public usedForOrderBilling: Promise<Order[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

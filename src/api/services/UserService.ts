@@ -29,13 +29,15 @@ export class UserService {
       throw new UserAlreadyExistsError();
     }
 
-    const user = User.fromData({
-      email: command.email,
-      password: command.password,
-      role: command.role,
-      firstName: command.firstName,
-      lastName: command.lastName,
-    });
+    const user = this.userRepository.create(
+      User.fromData({
+        email: command.email,
+        password: command.password,
+        role: command.role,
+        firstName: command.firstName,
+        lastName: command.lastName,
+      }),
+    );
 
     return this.userRepository.save(user);
   }

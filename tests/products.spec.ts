@@ -15,7 +15,7 @@ let nonMerchandiserAuthToken: string;
 
 let newProductId: string;
 
-describe("App should return existing products from fixtures", () => {
+describe("App products endpoints should work", () => {
   beforeAll(async() => {
     ({ express, connection } = await app as any);
 
@@ -32,11 +32,12 @@ describe("App should return existing products from fixtures", () => {
   });
 
   afterAll(async() => {
-    await connection.close();
+    // close connections and stop server
     await (express as any).stop();
+    await connection.close();
   });
 
-  it("App should return all active existing products from db", (done) => {
+  it("App should return all existing active products from db", (done) => {
     request(express)
       .get("/api/products")
       .accept("application/json")
@@ -206,105 +207,121 @@ describe("App should return existing products from fixtures", () => {
       });
   });
 
-  // SEGUIR E ACA
-  // it("Update vendor should return a 403 for non authorized users", (done) => {
-  //   request(express)
-  //     .put(`/api/products/${newProductId}`)
-  //     .auth(nonMerchandiserAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .expect(403)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Update product should return a 403 for non authorized users", (done) => {
+    request(express)
+      .put(`/api/products/${newProductId}`)
+      .auth(nonMerchandiserAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .expect(403)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("AccessDeniedError");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("AccessDeniedError");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Update vendor should work for valid body and authorized user", (done) => {
-  //   request(express)
-  //     .put(`/api/products/${newProductId}`)
-  //     .auth(merchandiserAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send({
-  //       name: "New Vendor Updated",
-  //     })
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Update product should work for valid body and authorized user", (done) => {
+    request(express)
+      .put(`/api/products/${newProductId}`)
+      .auth(merchandiserAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .send({
+        SKU: "UPDATED_PRODUCT",
+        title: "Updated Product",
+        description: "Some updated product",
+        price: 15.00,
+        inventory: 25,
+        deliveryTime: "2 - 3 weeks",
+        isActive: false,
+        vendor: "028987da-de88-4714-ab15-8c6f487a18bf", // this vendor was created by the authenticated merchandiser
+        category: "25b4cf30-7da0-414d-8a0a-939866aaa670",
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.id).toBeDefined();
-  //       expect(res.body.name).toBe("New Vendor Updated");
-  //       expect(res.body.code).toBe("NEW_VENDOR_UPDATED");
+        expect(res.body).toBeDefined();
+        expect(res.body.id).toBeDefined();
+        expect(res.body.SKU).toBe("UPDATED_PRODUCT");
+        expect(res.body.title).toBe("Updated Product");
+        expect(res.body.description).toBe("Some updated product");
+        expect(res.body.price).toBe(15.00);
+        expect(res.body.inventory).toBe(25);
+        expect(res.body.deliveryTime).toBe("2 - 3 weeks");
+        expect(res.body.isActive).toBe(false);
+        expect(res.body.vendor).toBeDefined();
+        expect(res.body.vendor.id).toBe("028987da-de88-4714-ab15-8c6f487a18bf");
+        expect(res.body.category).toBeDefined();
+        expect(res.body.category.id).toBe("25b4cf30-7da0-414d-8a0a-939866aaa670");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Delete vendor should return a 403 for non authorized users", (done) => {
-  //   request(express)
-  //     .delete(`/api/products/${newProductId}`)
-  //     .auth(nonMerchandiserAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .expect(403)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Delete product should return a 403 for non authorized users", (done) => {
+    request(express)
+      .delete(`/api/products/${newProductId}`)
+      .auth(nonMerchandiserAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .expect(403)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("AccessDeniedError");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("AccessDeniedError");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Delete vendor should work for valid body and authorized user", (done) => {
-  //   request(express)
-  //     .delete(`/api/products/${newProductId}`)
-  //     .auth(merchandiserAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send()
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Delete product should work for valid body and authorized user", (done) => {
+    request(express)
+      .delete(`/api/products/${newProductId}`)
+      .auth(merchandiserAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.success).toBeDefined();
-  //       expect(res.body.status).toBe("deleted");
+        expect(res.body).toBeDefined();
+        expect(res.body.success).toBeDefined();
+        expect(res.body.status).toBe("deleted");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("App should return a 404 for non-existing (or deleted) vendor", (done) => {
-  //   request(express)
-  //     .get(`/api/products/${newProductId}`)
-  //     .accept("application/json")
-  //     .expect(404)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("App should return a 404 for non-existing (or deleted) product", (done) => {
+    request(express)
+      .get(`/api/products/${newProductId}`)
+      .accept("application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("EntityNotFoundError");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("EntityNotFoundError");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 });

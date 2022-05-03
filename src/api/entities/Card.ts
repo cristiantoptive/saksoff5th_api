@@ -1,8 +1,7 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
 import { User } from "./User";
-import { Order } from "./Order";
 
 @Entity()
 export class Card {
@@ -39,14 +38,11 @@ export class Card {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, user => user.cards, {
+  @ManyToOne(() => User, {
     nullable: false,
     onDelete: "CASCADE",
   })
   public user: Promise<User>;
-
-  @OneToMany(() => Order, order => order.paymentCard)
-  public usedForOrder: Promise<Order[]>;
 
   public static fromData(data: { [prop: string]: any }): Card {
     return Card.updateData(new Card(), data);

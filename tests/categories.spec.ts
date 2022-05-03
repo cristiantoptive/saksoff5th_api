@@ -32,8 +32,9 @@ describe("App categories endpoints should work", () => {
   });
 
   afterAll(async() => {
-    await connection.close();
+    // close connections and stop server
     await (express as any).stop();
+    await connection.close();
   });
 
   it("App should return all existing categories from db", (done) => {

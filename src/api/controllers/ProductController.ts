@@ -13,12 +13,12 @@ export class ProductController {
   @Inject() private productsService: ProductsService;
 
   @Get()
-  public async all(@CurrentUser({ required: false }) user: User, @QueryParam("onlyMine") onlyMine?: boolean): Promise<ProductViewModel[]> {
+  public all(@CurrentUser({ required: false }) user: User, @QueryParam("onlyMine", { required: false }) onlyMine?: boolean): Promise<ProductViewModel[]> {
     return ViewModel.createMany(ProductViewModel, this.productsService.all(user, onlyMine));
   }
 
   @Get("/:id")
-  public async one(@Param("id") id: string): Promise<ProductViewModel> {
+  public one(@Param("id") id: string): Promise<ProductViewModel> {
     return ViewModel.createOne(ProductViewModel, this.productsService.find(id));
   }
 

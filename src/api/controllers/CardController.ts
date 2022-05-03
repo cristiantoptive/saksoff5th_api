@@ -13,12 +13,12 @@ export class CardController {
   @Inject() private cardsService: CardsService;
 
   @Get()
-  public async all(@CurrentUser() user: User): Promise<CardViewModel[]> {
+  public all(@CurrentUser() user: User): Promise<CardViewModel[]> {
     return ViewModel.createMany(CardViewModel, this.cardsService.all(user));
   }
 
   @Get("/:id")
-  public async one(@CurrentUser() user: User, @Param("id") id: string): Promise<CardViewModel> {
+  public one(@CurrentUser() user: User, @Param("id") id: string): Promise<CardViewModel> {
     return ViewModel.createOne(CardViewModel, this.cardsService.find(id, user));
   }
 

@@ -1,4 +1,4 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, Unique, OneToMany } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, Unique, ManyToOne, OneToMany } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
 import { User } from "./User";
@@ -67,26 +67,28 @@ export class Product {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, user => user.products, {
+  @ManyToOne(() => User, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public createdBy: Promise<User>;
 
-  @ManyToOne(() => Vendor, vendor => vendor.products, {
+  @ManyToOne(() => Vendor, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public vendor: Promise<Vendor>;
 
-  @ManyToOne(() => ProductCategory, category => category.products, {
+  @ManyToOne(() => ProductCategory, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public category: Promise<ProductCategory>;
 
-  @OneToMany(() => Upload, upload => upload.product)
-  public images: Promise<Upload[]>;
+  @OneToMany(() => Upload, upload => upload.product, {
+    lazy: false,
+  })
+  public images: Upload[];
 
   public static fromData(data: { [prop: string]: any }): Product {
     return Product.updateData(new Product(), data);

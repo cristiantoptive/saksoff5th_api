@@ -1,0 +1,14 @@
+entity: Card
+resolvedFields: ["user"]
+processor: ../processor/CardProcessor
+items:
+  card1:
+    id: 4c3b4021-ae5d-199f-b2ec-14078dfa0ad7
+    number: '{{finance.creditCardNumber}}'
+    expiresOn: 01/08/2024
+    user: '@user3'
+  card:
+    id: 1c42f6d1-0dad-1108-a448-a4f73cdb7f40
+    number: '{{finance.creditCardNumber}}'
+    expiresOn: 01/02/2023
+    user: '@user4'

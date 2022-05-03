@@ -7,6 +7,8 @@ export default class AddressProcessor implements IProcessor<Address> {
   preProcess(name: string, object: any): any {
     return {
       ...object,
+      firstName: object.user.lastName,
+      lastName: object.user.firstName,
       user: Promise.resolve(object.user),
     };
   }

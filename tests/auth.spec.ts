@@ -73,6 +73,7 @@ describe("App auth process should work", () => {
         expect(res.body).toBeDefined();
         expect(res.body.token).toBeDefined();
         expect(res.body.user).toBeDefined();
+        expect(res.body.user.email).toBe("merchandiser1@merchandiser.com");
         expect(res.body.user.role).toBe("merchandiser");
 
         done();
@@ -97,6 +98,7 @@ describe("App auth process should work", () => {
         expect(res.body).toBeDefined();
         expect(res.body.token).toBeDefined();
         expect(res.body.user).toBeDefined();
+        expect(res.body.user.email).toBe("customer1@customer.com");
         expect(res.body.user.role).toBe("customer");
 
         done();

@@ -1,4 +1,4 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, BeforeInsert, ManyToOne } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
 import { AddressTypes } from "@app/api/types";
@@ -86,15 +86,6 @@ export class Address {
     onDelete: "CASCADE",
   })
   public user: Promise<User>;
-
-  @BeforeInsert()
-  public async beforeInsert(): Promise<void> {
-    const user = await this.user;
-    if (user && !this.firstName && !this.lastName) {
-      this.firstName = user.firstName;
-      this.lastName = user.lastName;
-    }
-  }
 
   public static fromData(data: { [prop: string]: any }): Address {
     return Address.updateData(new Address(), data);

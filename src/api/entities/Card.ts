@@ -18,7 +18,7 @@ export class Card {
   @Column({
     nullable: false,
     type: "varchar",
-    length: 19,
+    length: 22,
   })
   public number: string;
 

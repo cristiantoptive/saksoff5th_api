@@ -38,7 +38,7 @@ export class CardsService {
         user: user,
         name: command.name,
         number: command.number,
-        expiresOn: command.expiresOn,
+        expiresOn: new Date(command.expiresOn),
       }),
     );
 
@@ -51,7 +51,7 @@ export class CardsService {
     Card.updateData(card, {
       name: command.name,
       number: command.number,
-      expiresOn: command.expiresOn,
+      expiresOn: new Date(command.expiresOn),
     });
 
     return this.cardsRepository.save(card);

@@ -11,7 +11,7 @@ let express: Express;
 let connection: Connection;
 
 let userAuthToken: string;
-// let newCardId: string;
+let newCardId: string;
 
 describe("App cards endpoints should work", () => {
   beforeAll(async() => {
@@ -34,9 +34,28 @@ describe("App cards endpoints should work", () => {
     await connection.close();
   });
 
-  it("App should return all existing categories from db", (done) => {
+  it("App should require authentication to list user cards", (done) => {
     request(express)
-      .get("/api/categories")
+      .get("/api/cards")
+      .accept("application/json")
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("AuthorizationRequiredError");
+
+        done();
+      });
+  });
+
+  it("Authenticated user should be able to retrieve their cards", (done) => {
+    request(express)
+      .get("/api/cards")
+      .auth(userAuthToken, { type: "bearer" })
       .accept("application/json")
       .expect(200)
       .end((err, res) => {
@@ -45,198 +64,256 @@ describe("App cards endpoints should work", () => {
           return;
         }
 
-        console.log(userAuthToken);
-        expect(res.body).toHaveLength(3);
+        expect(res.body).toHaveLength(1);
 
         done();
       });
   });
 
-  // it("Create new category should return a 403 for non authorized users", (done) => {
-  //   request(express)
-  //     .post("/api/categories")
-  //     .auth(nonAdminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .expect(403)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("User must be authenticated to retrieve card details", (done) => {
+    request(express)
+      .get("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40")
+      .accept("application/json")
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("AccessDeniedError");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("AuthorizationRequiredError");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Create new category should must validate body for authorized users", (done) => {
-  //   request(express)
-  //     .post("/api/categories")
-  //     .auth(adminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send({ })
-  //     .expect(400)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Users can only retrieve details from their own cards", (done) => {
+    request(express)
+      .get("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40") // existing card from another user
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("ValidationError");
-  //       expect(res.body.errors).toBeDefined();
-  //       expect(res.body.errors.name).toBeDefined();
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("EntityNotFoundError");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Create new category should work for valid body and authorized user", (done) => {
-  //   request(express)
-  //     .post("/api/categories")
-  //     .auth(adminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send({
-  //       name: "Sports",
-  //     })
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Only authenticated users can add new cards", (done) => {
+    request(express)
+      .post("/api/cards")
+      .accept("application/json")
+      .expect(401)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.id).toBeDefined();
-  //       expect(res.body.name).toBe("Sports");
-  //       expect(res.body.code).toBe("SPORTS");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("AuthorizationRequiredError");
 
-  //       newCardId = res.body.id;
+        done();
+      });
+  });
 
-  //       done();
-  //     });
-  // });
+  it("App must validate request body to add new cards", (done) => {
+    request(express)
+      .post("/api/cards")
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .send({ })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  // it("App should return existing and new category by id from db", (done) => {
-  //   request(express)
-  //     .get(`/api/categories/${newCardId}`)
-  //     .accept("application/json")
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("ValidationError");
+        expect(res.body.errors).toBeDefined();
+        expect(res.body.errors.name).toBeDefined();
+        expect(res.body.errors.number).toBeDefined();
+        expect(res.body.errors.expiresOn).toBeDefined();
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.id).toBe(newCardId);
-  //       expect(res.body.name).toBe("Sports");
-  //       expect(res.body.code).toBe("SPORTS");
+        done();
+      });
+  });
 
-  //       done();
-  //     });
-  // });
+  it("Users should be able to add new cards if request body is correct", (done) => {
+    const expiresOn = new Date("09/01/2024").toISOString();
 
-  // it("Update category should return a 403 for non authorized users", (done) => {
-  //   request(express)
-  //     .put(`/api/categories/${newCardId}`)
-  //     .auth(nonAdminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .expect(403)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+    request(express)
+      .post("/api/cards")
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .send({
+        name: "Jhon Doe",
+        number: "1234543467",
+        expiresOn,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("AccessDeniedError");
+        expect(res.body).toBeDefined();
+        expect(res.body.id).toBeDefined();
+        expect(res.body.name).toBe("Jhon Doe");
+        expect(res.body.number).toBe("1234543467");
+        expect(res.body.expiresOn).toBe(expiresOn);
 
-  //       done();
-  //     });
-  // });
+        newCardId = res.body.id;
 
-  // it("Update category should work for valid body and authorized user", (done) => {
-  //   request(express)
-  //     .put(`/api/categories/${newCardId}`)
-  //     .auth(adminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send({
-  //       name: "Sports Updated",
-  //     })
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+        done();
+      });
+  });
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.id).toBeDefined();
-  //       expect(res.body.name).toBe("Sports Updated");
-  //       expect(res.body.code).toBe("SPORTS_UPDATED");
+  it("App should return existing and new cards by id from db", (done) => {
+    request(express)
+      .get(`/api/cards/${newCardId}`)
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       done();
-  //     });
-  // });
+        expect(res.body).toBeDefined();
+        expect(res.body.id).toBe(newCardId);
+        expect(res.body.name).toBe("Jhon Doe");
+        expect(res.body.number).toBe("1234543467");
+        expect(res.body.expiresOn).toBeDefined();
 
-  // it("Delete category should return a 403 for non authorized users", (done) => {
-  //   request(express)
-  //     .delete(`/api/categories/${newCardId}`)
-  //     .auth(nonAdminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .expect(403)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+        done();
+      });
+  });
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("AccessDeniedError");
+  it("Users can only edit their own cards", (done) => {
+    const expiresOn = new Date("04/01/2024").toISOString();
 
-  //       done();
-  //     });
-  // });
+    request(express)
+      .put("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40") // existing card from another user
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .send({
+        name: "Jhon Doe",
+        number: "1234543467",
+        expiresOn,
+      })
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  // it("Delete category should work for valid body and authorized user", (done) => {
-  //   request(express)
-  //     .delete(`/api/categories/${newCardId}`)
-  //     .auth(adminAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send()
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("EntityNotFoundError");
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.success).toBeDefined();
-  //       expect(res.body.status).toBe("deleted");
+        done();
+      });
+  });
 
-  //       done();
-  //     });
-  // });
+  it("Users should be able to edit their own cards", (done) => {
+    const expiresOn = new Date("04/01/2024").toISOString();
 
-  // it("App should return a 404 for non-existing (or deleted) category", (done) => {
-  //   request(express)
-  //     .get(`/api/categories/${newCardId}`)
-  //     .accept("application/json")
-  //     .expect(404)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+    request(express)
+      .put(`/api/cards/${newCardId}`)
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .send({
+        name: "Jane Doe",
+        number: "5675834200453",
+        expiresOn,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("EntityNotFoundError");
+        expect(res.body).toBeDefined();
+        expect(res.body.id).toBe(newCardId);
+        expect(res.body.name).toBe("Jane Doe");
+        expect(res.body.number).toBe("5675834200453");
+        expect(res.body.expiresOn).toBeDefined();
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
+
+  it("Delete card should work only for cards that belongs to the aunthenticated user", (done) => {
+    request(express)
+      .delete("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40") // existing card from another user
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .send()
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("BadRequestError");
+
+        done();
+      });
+  });
+
+  it("Delete card should work for valid body and authorized user", (done) => {
+    request(express)
+      .delete(`/api/cards/${newCardId}`)
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        expect(res.body).toBeDefined();
+        expect(res.body.success).toBeDefined();
+        expect(res.body.status).toBe("deleted");
+
+        done();
+      });
+  });
+
+  it("App should return a 404 for non-existing (or deleted) card", (done) => {
+    request(express)
+      .get(`/api/cards/${newCardId}`)
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
+
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("EntityNotFoundError");
+
+        done();
+      });
+  });
 });

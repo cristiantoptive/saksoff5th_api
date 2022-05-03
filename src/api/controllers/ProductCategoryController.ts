@@ -66,7 +66,7 @@ export class ProductCategoryController {
   public async delete(@Param("id") id: string): Promise<any> {
     const result = await this.categoriesService.delete(id);
 
-    if (!result) {
+    if (!result || !result.affected) {
       throw new BadRequestError("Can't delete target product category");
     }
 

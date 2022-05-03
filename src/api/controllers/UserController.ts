@@ -45,7 +45,7 @@ export class UserController {
 
     const result = await this.userService.delete(id);
 
-    if (!result) {
+    if (!result || !result.affected) {
       throw new BadRequestError("Can't delete target user");
     }
 

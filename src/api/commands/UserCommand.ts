@@ -1,7 +1,8 @@
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { Roles, UserRoles } from "@app/api/types";
+import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
-export class UserCommand {
+export class UserCommand extends AuthenticatedCommand {
   @IsNotEmpty({
     message: "User email address is required",
   })

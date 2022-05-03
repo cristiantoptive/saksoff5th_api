@@ -25,7 +25,7 @@ export class usercards1650931098300 implements MigrationInterface {
         {
           name: "number",
           type: "varchar",
-          length: "19",
+          length: "22",
           isNullable: false,
         },
         {

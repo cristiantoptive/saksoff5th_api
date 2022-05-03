@@ -6,7 +6,7 @@ export default class CardProcessor implements IProcessor<Card> {
   preProcess(name: string, object: any): any {
     return {
       ...object,
-      number: object.number.replace(/-/g, "").trim(),
+      number: `${object.number}`.replace(/-/g, "").trim(),
       expiresOn: new Date(object.expiresOn),
       name: `${object.user.lastName} ${object.user.firstName}`,
       user: Promise.resolve(object.user),

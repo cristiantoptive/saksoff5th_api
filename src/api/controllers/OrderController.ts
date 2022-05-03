@@ -36,7 +36,7 @@ export class OrderController {
   public async delete(@CurrentUser() user: User, @Param("id") id: string): Promise<any> {
     const result = await this.ordersService.delete(id, user);
 
-    if (!result) {
+    if (!result || !result.affected) {
       throw new BadRequestError("Can't delete target order");
     }
 

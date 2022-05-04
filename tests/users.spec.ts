@@ -67,7 +67,7 @@ describe("App users endpoints should work", () => {
           return;
         }
 
-        expect(res.body).toHaveLength(5);
+        expect(res.body).toHaveLength(6);
 
         done();
       });

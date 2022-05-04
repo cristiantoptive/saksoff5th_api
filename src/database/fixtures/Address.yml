@@ -21,3 +21,12 @@ items:
     zipcode: '{{address.zipCode}}'
     country: '{{address.country}}'
     user: '@user3'
+  address3:
+    id: 9fgabf28-6c5f-4cfb-819d-f85f09f3g3q1
+    type: shipping
+    line1: '{{address.streetAddress}}'
+    city: '{{address.cityName}}'
+    state: '{{address.state}}'
+    zipcode: '{{address.zipCode}}'
+    country: '{{address.country}}'
+    user: '@user6'

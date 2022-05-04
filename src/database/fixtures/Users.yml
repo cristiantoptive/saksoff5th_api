@@ -37,3 +37,10 @@ items:
     role: merchandiser
     firstName: '{{name.firstName}}'
     lastName: '{{name.lastName}}'
+  user6:
+    id: 34498f2e-fc5e-3780-9595-75cb2405b33d
+    email: customer3@customer.com
+    password: customer123
+    role: customer
+    firstName: '{{name.firstName}}'
+    lastName: '{{name.lastName}}'

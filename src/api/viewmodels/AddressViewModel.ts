@@ -28,6 +28,9 @@ export class AddressViewModel extends ViewModel {
   public line2: string;
 
   @IsString()
+  public city: string;
+
+  @IsString()
   public state: string;
 
   @IsString()
@@ -44,6 +47,7 @@ export class AddressViewModel extends ViewModel {
       lastName: address.lastName,
       line1: address.line1,
       line2: address.line2,
+      city: address.city,
       state: address.state,
       zipcode: address.zipcode,
       country: address.country,

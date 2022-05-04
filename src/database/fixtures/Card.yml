@@ -1,6 +1,6 @@
 entity: Card
 resolvedFields: ["user"]
-processor: ../processor/CardProcessor
+processor: ./processor/CardProcessor
 items:
   card1:
     id: 4c3b4021-ae5d-199f-b2ec-14078dfa0ad7

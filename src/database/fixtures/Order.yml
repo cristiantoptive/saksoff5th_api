@@ -1,0 +1,11 @@
+entity: Order
+resolvedFields: ["placedBy", "shippingAddress", "billingAddress", "paymentCard"]
+processor: ./processor/OrderProcessor
+items:
+  order1:
+    id: f4c09df8-f5a9-4507-bb36-ec0a5a827f3f
+    status: placed
+    placedBy: '@user3'
+    shippingAddress: '@address1'
+    billingAddress: '@address2'
+    paymentCard: '@card1'

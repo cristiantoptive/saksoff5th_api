@@ -1,6 +1,6 @@
 entity: Upload
 resolvedFields: ["product", "createdBy"]
-processor: ../processor/UploadProcessor
+processor: ./processor/UploadProcessor
 items:
   upload1:
     id: c9cde2ca-a92d-49b4-9978-41b815044599

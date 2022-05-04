@@ -1,6 +1,6 @@
 entity: Product
 resolvedFields: ["createdBy", "vendor", "category"]
-processor: ../processor/ProductProcessor
+processor: ./processor/ProductProcessor
 items:
   product1:
     id: 9335113d-552b-4e86-bd33-e74315c7b30a

@@ -1,6 +1,6 @@
 entity: Address
 resolvedFields: ["user"]
-processor: ../processor/AddressProcessor
+processor: ./processor/AddressProcessor
 items:
   address1:
     id: 39d01e74-c990-4612-810b-1459da48cddf

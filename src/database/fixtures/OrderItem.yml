@@ -1,0 +1,14 @@
+entity: OrderItem
+resolvedFields: ["product", "order"]
+processor: ./processor/OrderItemProcessor
+items:
+  item1:
+    id: b49d9c28-4472-49f0-814c-19d05a5eb786
+    quantity: 4
+    product: '@product1'
+    order: '@order1'
+  item2:
+    id: b49d9c28-4472-49f0-814c-19d05a5eb786
+    quantity: 1
+    product: '@product2'
+    order: '@order1'

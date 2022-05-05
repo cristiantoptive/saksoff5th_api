@@ -81,7 +81,7 @@ export class Address {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, {
+  @ManyToOne(() => User, user => user.addresses, {
     nullable: false,
     onDelete: "CASCADE",
   })

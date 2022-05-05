@@ -67,28 +67,26 @@ export class Product {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, {
+  @ManyToOne(() => User, user => user.products, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public createdBy: Promise<User>;
 
-  @ManyToOne(() => Vendor, {
+  @ManyToOne(() => Vendor, vendor => vendor.products, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public vendor: Promise<Vendor>;
 
-  @ManyToOne(() => ProductCategory, {
+  @ManyToOne(() => ProductCategory, category => category.products, {
     nullable: true,
     onDelete: "SET NULL",
   })
   public category: Promise<ProductCategory>;
 
-  @OneToMany(() => Upload, upload => upload.product, {
-    lazy: false,
-  })
-  public images: Upload[];
+  @OneToMany(() => Upload, upload => upload.product)
+  public images: Promise<Upload[]>;
 
   public static fromData(data: { [prop: string]: any }): Product {
     return Product.updateData(new Product(), data);

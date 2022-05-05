@@ -6,7 +6,7 @@ export default class OrderItemProcessor implements IProcessor<OrderItem> {
   preProcess(name: string, object: any): any {
     return {
       ...object,
-      price: object.product.price,
+      price: object.quantity * object.product.price,
       product: Promise.resolve(object.product),
       order: Promise.resolve(object.order),
     };

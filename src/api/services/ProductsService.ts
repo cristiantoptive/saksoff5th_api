@@ -14,20 +14,16 @@ export class ProductsService {
   public all(user?: User, onlyMine?: boolean): Promise<Product[]> {
     if (!onlyMine) {
       return this.productsRepository.find({
-        where: [
-          {
-            isActive: true,
-          },
-        ],
+        where: {
+          isActive: true,
+        },
       });
     }
 
     return this.productsRepository.find({
-      where: [
-        {
-          createdBy: user,
-        },
-      ],
+      where: {
+        createdBy: user,
+      },
     });
   }
 
@@ -37,12 +33,10 @@ export class ProductsService {
     }
 
     return this.productsRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          createdBy: user,
-        },
-      ],
+      where: {
+        id,
+        createdBy: user,
+      },
     });
   }
 

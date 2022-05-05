@@ -17,11 +17,9 @@ export class VendorService {
     }
 
     return this.vendorRepository.find({
-      where: [
-        {
-          createdBy: user,
-        },
-      ],
+      where: {
+        createdBy: user,
+      },
     });
   }
 
@@ -31,12 +29,10 @@ export class VendorService {
     }
 
     return this.vendorRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          createdBy: user,
-        },
-      ],
+      where: {
+        id,
+        createdBy: user,
+      },
     });
   }
 

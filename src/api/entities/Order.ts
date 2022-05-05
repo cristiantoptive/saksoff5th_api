@@ -56,7 +56,7 @@ export class Order {
   public paymentCard: Promise<Card>;
 
   @OneToMany(() => OrderItem, orderItem => orderItem.order)
-  public items: OrderItem[];
+  public items: Promise<OrderItem[]>;
 
   public static fromData(data: { [prop: string]: any }): Order {
     return Order.updateData(new Order(), data);

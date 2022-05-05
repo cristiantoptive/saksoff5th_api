@@ -14,21 +14,19 @@ export class AddressService {
 
   public all(user: User): Promise<Address[]> {
     return this.addressRepository.find({
-      where: [
-        {
-          user,
-        },
-      ],
+      where: {
+        user,
+      },
     });
   }
 
   public find(id: string, user: User, type?: AddressTypes): Promise<Address | undefined> {
     return this.addressRepository.findOneOrFail({
-      where: [{
+      where: {
         id,
         user,
         ...(type ? { type } : { }),
-      }],
+      },
     });
   }
 

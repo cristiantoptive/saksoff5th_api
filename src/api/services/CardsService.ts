@@ -13,22 +13,18 @@ export class CardsService {
 
   public all(user: User): Promise<Card[]> {
     return this.cardsRepository.find({
-      where: [
-        {
-          user,
-        },
-      ],
+      where: {
+        user,
+      },
     });
   }
 
   public find(id: string, user: User): Promise<Card | undefined> {
     return this.cardsRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          user,
-        },
-      ],
+      where: {
+        id,
+        user,
+      },
     });
   }
 

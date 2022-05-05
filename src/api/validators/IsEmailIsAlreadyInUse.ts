@@ -22,7 +22,11 @@ export class IsEmailIsAlreadyInUseConstraint implements ValidatorConstraintInter
       return true;
     }
 
-    const user = await this.userRepository.findOne({ email });
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
 
     return !user;
   }

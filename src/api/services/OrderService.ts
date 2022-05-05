@@ -16,22 +16,18 @@ export class OrderService {
 
   public all(user: User): Promise<Order[]> {
     return this.orderRepository.find({
-      where: [
-        {
-          placedBy: user,
-        },
-      ],
+      where: {
+        placedBy: user,
+      },
     });
   }
 
   public find(id: string, user: User): Promise<Order | undefined> {
     return this.orderRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          placedBy: user,
-        },
-      ],
+      where: {
+        id,
+        placedBy: user,
+      },
     });
   }
 

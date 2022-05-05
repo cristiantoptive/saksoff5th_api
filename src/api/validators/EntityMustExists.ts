@@ -9,7 +9,7 @@ import {
 } from "class-validator";
 import { Service } from "typedi";
 import { FindConditions, getRepository } from "typeorm";
-import { AuthenticatedCommand } from "../commands/AuthenticatedCommand";
+import { AuthenticatedCommand } from "@app/api/commands/AuthenticatedCommand";
 
 @Service()
 @ValidatorConstraint({
@@ -29,7 +29,13 @@ export class EntityMustExistsConstraint implements ValidatorConstraintInterface 
       mustMatch[userKey] = (opts.object as AuthenticatedCommand).currentUser;
     }
 
-    const entity = await getRepository(entityClazz).findOne({ id, ...mustMatch });
+    const entity = await getRepository(entityClazz).findOne({
+      where: {
+        id,
+        ...mustMatch,
+      },
+    });
+
     if (entity) {
       opts.object[opts.property] = entity;
     }

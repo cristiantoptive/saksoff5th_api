@@ -38,7 +38,7 @@ export class Card {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, {
+  @ManyToOne(() => User, user => user.cards, {
     nullable: false,
     onDelete: "CASCADE",
   })

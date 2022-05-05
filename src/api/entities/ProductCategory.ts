@@ -1,6 +1,7 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, Unique, BeforeInsert } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, Unique, BeforeInsert, OneToMany } from "typeorm";
 
 import { mergeByKeys, snackCase } from "@app/lib/utils/functions";
+import { Product } from "./Product";
 
 @Entity()
 @Unique("UQ_PRODUCT_CATEGORY", ["code"])
@@ -31,6 +32,9 @@ export class ProductCategory {
     nullable: false,
   })
   public updatedOn: Date;
+
+  @OneToMany(() => Product, product => product.category)
+  public products: Promise<Product[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

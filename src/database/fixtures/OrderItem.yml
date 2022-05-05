@@ -8,7 +8,7 @@ items:
     product: '@product1'
     order: '@order1'
   item2:
-    id: b49d9c28-4472-49f0-814c-19d05a5eb786
+    id: bb5c5028-d080-4425-8806-8f12c9e16526
     quantity: 1
     product: '@product2'
     order: '@order1'

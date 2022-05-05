@@ -7,8 +7,13 @@ items:
     number: '{{finance.creditCardNumber}}'
     expiresOn: 01/08/2024
     user: '@user3'
-  card:
+  card2:
     id: 1c42f6d1-0dad-1108-a448-a4f73cdb7f40
     number: '{{finance.creditCardNumber}}'
     expiresOn: 01/02/2023
     user: '@user4'
+  card3:
+    id: 6531598a-3540-4dbf-84f4-046e5815094c
+    number: '{{finance.creditCardNumber}}'
+    expiresOn: 01/01/2025
+    user: '@user6'

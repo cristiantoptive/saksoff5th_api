@@ -78,6 +78,9 @@ export class OrderService {
       return null;
     }
 
+    // remove order items manually (no cascade) to propagate remove event
+    await this.orderItemRepository.remove(await order.items);
+
     return this.orderRepository.delete({
       id,
       placedBy: user,

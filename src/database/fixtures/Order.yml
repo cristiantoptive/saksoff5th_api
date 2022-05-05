@@ -9,3 +9,10 @@ items:
     shippingAddress: '@address1'
     billingAddress: '@address2'
     paymentCard: '@card1'
+  order2:
+    id: bd76f634-ff1a-497b-b726-4519487e0a5b
+    status: placed
+    placedBy: '@user6'
+    shippingAddress: '@address3'
+    billingAddress: '@address3'
+    paymentCard: '@card3'

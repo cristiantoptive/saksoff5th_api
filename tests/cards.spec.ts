@@ -72,7 +72,7 @@ describe("App cards endpoints should work", () => {
 
   it("User must be authenticated to retrieve card details", (done) => {
     request(express)
-      .get("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40")
+      .get("/api/cards/d7797afa-2815-44aa-8344-cdf46243153a")
       .accept("application/json")
       .expect(401)
       .end((err, res) => {
@@ -90,7 +90,7 @@ describe("App cards endpoints should work", () => {
 
   it("Users can only retrieve details from their own cards", (done) => {
     request(express)
-      .get("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40") // existing card from another user
+      .get("/api/cards/d7797afa-2815-44aa-8344-cdf46243153a") // existing card from another user
       .auth(userAuthToken, { type: "bearer" })
       .accept("application/json")
       .expect(404)
@@ -206,7 +206,7 @@ describe("App cards endpoints should work", () => {
     const expiresOn = new Date("04/01/2024").toISOString();
 
     request(express)
-      .put("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40") // existing card from another user
+      .put("/api/cards/d7797afa-2815-44aa-8344-cdf46243153a") // existing card from another user
       .accept("application/json")
       .auth(userAuthToken, { type: "bearer" })
       .send({
@@ -259,7 +259,7 @@ describe("App cards endpoints should work", () => {
 
   it("Delete card should work only for cards that belongs to the aunthenticated user", (done) => {
     request(express)
-      .delete("/api/cards/1c42f6d1-0dad-1108-a448-a4f73cdb7f40") // existing card from another user
+      .delete("/api/cards/d7797afa-2815-44aa-8344-cdf46243153a") // existing card from another user
       .auth(userAuthToken, { type: "bearer" })
       .accept("application/json")
       .send()

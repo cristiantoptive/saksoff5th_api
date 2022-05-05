@@ -45,7 +45,7 @@ export class OrderService {
     await this.orderRepository.save(order);
     await this.createOrderItems(order, command);
 
-    return order;
+    return this.orderRepository.findOne(order.id);
   }
 
   public async update(id: string, command: OrderCommand, user: User): Promise<Order> {
@@ -65,7 +65,7 @@ export class OrderService {
     await this.orderItemRepository.remove(await order.items);
     await this.createOrderItems(order, command);
 
-    return order;
+    return this.orderRepository.findOne(order.id);
   }
 
   public async delete(id: string, user: User): Promise<DeleteResult> {
@@ -102,7 +102,7 @@ export class OrderService {
         }),
       );
 
-      await this.orderItemRepository.save(orderItem);
+      await this.orderItemRepository.insert(orderItem);
     }
   }
 }

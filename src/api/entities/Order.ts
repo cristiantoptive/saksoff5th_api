@@ -72,6 +72,7 @@ export class Order {
         "shippingAddress",
         "billingAddress",
         "paymentCard",
+        "items",
       ],
     );
 

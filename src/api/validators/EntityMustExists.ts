@@ -22,7 +22,13 @@ export class EntityMustExistsConstraint implements ValidatorConstraintInterface 
       return false;
     }
 
-    const [entityClazz, { mustMatch = { } }] = opts.constraints;
+    const [entityClazz] = opts.constraints;
+    let [, { mustMatch = { } }] = opts.constraints;
+
+    if (mustMatch instanceof Function) {
+      mustMatch = mustMatch(opts.object);
+    }
+
     const userKey = Object.keys(mustMatch).find(key => mustMatch[key] === "@currentUser");
 
     if (userKey) {
@@ -49,7 +55,7 @@ export class EntityMustExistsConstraint implements ValidatorConstraintInterface 
 }
 
 export interface ExtendedValidationOptions<T> extends ValidationOptions {
-  mustMatch?: FindConditions<T>;
+  mustMatch?: FindConditions<T> | ((self: any) => FindConditions<T>);
 }
 
 export function EntityMustExists<T>(entityClazz: new () => T, options?: ExtendedValidationOptions<T>): any {
@@ -63,4 +69,3 @@ export function EntityMustExists<T>(entityClazz: new () => T, options?: Extended
     });
   };
 }
-

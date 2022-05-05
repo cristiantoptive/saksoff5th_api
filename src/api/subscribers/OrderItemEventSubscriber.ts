@@ -17,8 +17,8 @@ export class OrderItemEventSubscriber implements EntitySubscriberInterface<Order
         const product = await event.entity.product;
         if (product) {
           const productRepository = event.connection.getRepository<Product>(Product);
+          product.inventory = (product.inventory || 0) - (event.entity.quantity || 0);
 
-          product.inventory--;
           await productRepository.save(product);
         }
       }
@@ -42,8 +42,8 @@ export class OrderItemEventSubscriber implements EntitySubscriberInterface<Order
         const product = await event.entity.product;
         if (product) {
           const productRepository = event.connection.getRepository<Product>(Product);
+          product.inventory = (product.inventory || 0) + (event.entity.quantity || 0);
 
-          product.inventory++;
           await productRepository.save(product);
         }
       }

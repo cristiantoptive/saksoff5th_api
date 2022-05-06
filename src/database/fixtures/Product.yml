@@ -25,3 +25,14 @@ items:
     createdBy: '@user5'
     vendor: '@vendor2'
     category: '@category3'
+  product3:
+    id: a469d682-7a77-41a5-b23f-966ccf5aa42a
+    SKU: PRODUCT_3
+    title: Product 3
+    price: 0.15
+    inventory: 100
+    deliveryTime: 1 day
+    isActive: true
+    createdBy: '@user5'
+    vendor: '@vendor1'
+    category: '@category2'

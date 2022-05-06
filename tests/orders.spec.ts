@@ -11,7 +11,7 @@ let express: Express;
 let connection: Connection;
 
 let userAuthToken: string;
-// let newOrderId: string;
+let newOrderId: string;
 
 describe("App orders endpoints should work", () => {
   beforeAll(async() => {
@@ -225,166 +225,144 @@ describe("App orders endpoints should work", () => {
         expect(res.body.items[0].product).toBeDefined();
         expect(res.body.items[0].product.id).toBe("9335113d-552b-4e86-bd33-e74315c7b30a");
 
-        // newOrderId = res.body.id;
+        newOrderId = res.body.id;
 
         done();
       });
   });
 
-  // it("App should return existing and new order by id from db", (done) => {
-  //   request(express)
-  //     .get(`/api/orders/${newOrderId}`)
-  //     .accept("application/json")
-  //     .auth(userAuthToken, { type: "bearer" })
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("App should return existing and new order by id from db", (done) => {
+    request(express)
+      .get(`/api/orders/${newOrderId}`)
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.id).toBe(newOrderId);
-  //       expect(res.body.type).toBe("billing");
-  //       expect(res.body.firstName).toBe("Jhon");
-  //       expect(res.body.lastName).toBe("Doe");
-  //       expect(res.body.line1).toBe("Line 1");
-  //       expect(res.body.line2).toBe("Line 2");
-  //       expect(res.body.city).toBe("City");
-  //       expect(res.body.state).toBe("State");
-  //       expect(res.body.zipcode).toBe("01010");
-  //       expect(res.body.country).toBe("Country");
+        expect(res.body).toBeDefined();
+        expect(res.body.id).toBe(newOrderId);
+        expect(res.body.status).toBe("placed");
+        expect(res.body.shippingAddress).toBeDefined();
+        expect(res.body.shippingAddress.id).toBe("39d01e74-c990-4612-810b-1459da48cddf");
+        expect(res.body.billingAddress).toBeDefined();
+        expect(res.body.billingAddress.id).toBe("4ecabf37-5c8f-4cfb-809d-f85f09e9a0d7");
+        expect(res.body.paymentCard).toBeDefined();
+        expect(res.body.paymentCard.id).toBe("cf745067-52a8-4314-96de-982e3b70fbc7");
+        expect(res.body.items).toBeDefined();
+        expect(res.body.items).toHaveLength(1);
+        expect(res.body.items[0].id).toBeDefined();
+        expect(res.body.items[0].quantity).toBe(5);
+        expect(res.body.items[0].product).toBeDefined();
+        expect(res.body.items[0].product.id).toBe("9335113d-552b-4e86-bd33-e74315c7b30a");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Users can only edit their own order", (done) => {
-  //   request(express)
-  //     .put("/api/orders/9fgabf28-6c5f-4cfb-819d-f85f09f3g3q1") // existing order from another user
-  //     .accept("application/json")
-  //     .auth(userAuthToken, { type: "bearer" })
-  //     .send({
-  //       type: "shipping",
-  //       firstName: "Jhon updated",
-  //       lastName: "Doe updated",
-  //       line1: "Line 1 updated",
-  //       line2: "Line 2 updated",
-  //       city: "City updated",
-  //       state: "State updated",
-  //       zipcode: "01010 updated",
-  //       country: "Country updated",
-  //     })
-  //     .expect(404)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Users should be able to edit their own order", (done) => {
+    request(express)
+      .put(`/api/orders/${newOrderId}`)
+      .accept("application/json")
+      .auth(userAuthToken, { type: "bearer" })
+      .send({
+        shippingAddress: "39d01e74-c990-4612-810b-1459da48cddf",
+        billingAddress: "4ecabf37-5c8f-4cfb-809d-f85f09e9a0d7",
+        card: "cf745067-52a8-4314-96de-982e3b70fbc7",
+        items: [
+          {
+            product: "9335113d-552b-4e86-bd33-e74315c7b30a",
+            quantity: 1,
+          },
+          {
+            product: "a469d682-7a77-41a5-b23f-966ccf5aa42a",
+            quantity: 4,
+          },
+        ],
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("EntityNotFoundError");
+        expect(res.body).toBeDefined();
+        expect(res.body.id).toBe(newOrderId);
+        expect(res.body.status).toBe("placed");
+        expect(res.body.shippingAddress).toBeDefined();
+        expect(res.body.shippingAddress.id).toBe("39d01e74-c990-4612-810b-1459da48cddf");
+        expect(res.body.billingAddress).toBeDefined();
+        expect(res.body.billingAddress.id).toBe("4ecabf37-5c8f-4cfb-809d-f85f09e9a0d7");
+        expect(res.body.paymentCard).toBeDefined();
+        expect(res.body.paymentCard.id).toBe("cf745067-52a8-4314-96de-982e3b70fbc7");
+        expect(res.body.items).toBeDefined();
+        expect(res.body.items).toHaveLength(2);
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Users should be able to edit their own order", (done) => {
-  //   request(express)
-  //     .put(`/api/orders/${newOrderId}`)
-  //     .accept("application/json")
-  //     .auth(userAuthToken, { type: "bearer" })
-  //     .send({
-  //       type: "shipping",
-  //       firstName: "Jhon updated",
-  //       lastName: "Doe updated",
-  //       line1: "Line 1 updated",
-  //       line2: "Line 2 updated",
-  //       city: "City updated",
-  //       state: "State updated",
-  //       zipcode: "01010 updated",
-  //       country: "Country updated",
-  //     })
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Delete order should work only for order that belongs to the aunthenticated user", (done) => {
+    request(express)
+      .delete("/api/orders/bd76f634-ff1a-497b-b726-4519487e0a5b") // existing order from another user
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .send()
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.id).toBe(newOrderId);
-  //       expect(res.body.type).toBe("shipping");
-  //       expect(res.body.firstName).toBe("Jhon updated");
-  //       expect(res.body.lastName).toBe("Doe updated");
-  //       expect(res.body.line1).toBe("Line 1 updated");
-  //       expect(res.body.line2).toBe("Line 2 updated");
-  //       expect(res.body.city).toBe("City updated");
-  //       expect(res.body.state).toBe("State updated");
-  //       expect(res.body.zipcode).toBe("01010 updated");
-  //       expect(res.body.country).toBe("Country updated");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("EntityNotFoundError");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Delete order should work only for order that belongs to the aunthenticated user", (done) => {
-  //   request(express)
-  //     .delete("/api/orders/9fgabf28-6c5f-4cfb-819d-f85f09f3g3q1") // existing order from another user
-  //     .auth(userAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send()
-  //     .expect(400)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("Delete order should work for valid body and authorized user", (done) => {
+    request(express)
+      .delete(`/api/orders/${newOrderId}`)
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .send()
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("BadRequestError");
+        expect(res.body).toBeDefined();
+        expect(res.body.success).toBeDefined();
+        expect(res.body.status).toBe("deleted");
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 
-  // it("Delete order should work for valid body and authorized user", (done) => {
-  //   request(express)
-  //     .delete(`/api/orders/${newOrderId}`)
-  //     .auth(userAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .send()
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
+  it("App should return a 404 for non-existing (or deleted) order", (done) => {
+    request(express)
+      .get(`/api/orders/${newOrderId}`)
+      .auth(userAuthToken, { type: "bearer" })
+      .accept("application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+          return;
+        }
 
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.success).toBeDefined();
-  //       expect(res.body.status).toBe("deleted");
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("EntityNotFoundError");
 
-  //       done();
-  //     });
-  // });
-
-  // it("App should return a 404 for non-existing (or deleted) order", (done) => {
-  //   request(express)
-  //     .get(`/api/orders/${newOrderId}`)
-  //     .auth(userAuthToken, { type: "bearer" })
-  //     .accept("application/json")
-  //     .expect(404)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         done(err);
-  //         return;
-  //       }
-
-  //       expect(res.body).toBeDefined();
-  //       expect(res.body.name).toBe("EntityNotFoundError");
-
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 });

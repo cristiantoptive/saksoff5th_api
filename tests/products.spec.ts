@@ -48,7 +48,7 @@ describe("App products endpoints should work", () => {
           return;
         }
 
-        expect(res.body).toHaveLength(1); // only 1 product is active on current fixtures
+        expect(res.body).toHaveLength(2); // only 2 of 3 products is active on current fixtures
 
         done();
       });

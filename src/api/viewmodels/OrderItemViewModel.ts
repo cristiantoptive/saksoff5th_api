@@ -24,7 +24,7 @@ export class OrderItemViewModel extends ViewModel {
     return super.mapObjectKeys({
       id: item.id,
       price: item.price,
-      quantity: item.quantity,
+      quantity: parseInt(item.quantity as unknown as string),
       product: ViewModel.createOne(ProductViewModel, item.product),
     });
   }

@@ -3,13 +3,19 @@ import * as path from "path";
 
 import * as pkg from "../package.json";
 import {
-  getOsEnv, getOsEnvOptional, normalizePort, toBool,
+  getOsEnv, getOsEnvOptional, normalizePort, toBool, toNumber,
 } from "./lib/env";
 
 /**
  * Load .env file or for tests the .env.test file.
  */
-dotenv.config({ path: path.join(process.cwd(), `.env${((process.env.NODE_ENV === "test") ? ".test" : "")}`) });
+const ext = {
+  test: ".test",
+  development: ".dev",
+  production: ".prod",
+}[process.env.NODE_ENV];
+
+dotenv.config({ path: path.join(process.cwd(), `.env${ext}`) });
 
 /**
  * Environment variables
@@ -27,7 +33,6 @@ export const env = {
     schema: getOsEnv("APP_SCHEMA"),
     routePrefix: getOsEnv("APP_ROUTE_PREFIX"),
     port: normalizePort(process.env.PORT || getOsEnv("APP_PORT")),
-    allowSignup: toBool(getOsEnv("APP_ALLOW_SIGNUP")),
     jtwSecret: getOsEnv("APP_JWT_SECRET"),
     jtwExpires: getOsEnv("APP_JWT_EXPIRES"),
   },
@@ -42,16 +47,23 @@ export const env = {
     json: toBool(getOsEnvOptional("LOG_JSON")),
     output: getOsEnv("LOG_OUTPUT"),
   },
-  /*
-   * db: {
-   *     type: getOsEnv('TYPEORM_CONNECTION'),
-   *     host: getOsEnvOptional('TYPEORM_HOST'),
-   *     port: toNumber(getOsEnvOptional('TYPEORM_PORT')),
-   *     username: getOsEnvOptional('TYPEORM_USERNAME'),
-   *     password: getOsEnvOptional('TYPEORM_PASSWORD'),
-   *     database: getOsEnv('TYPEORM_DATABASE'),
-   *     synchronize: toBool(getOsEnvOptional('TYPEORM_SYNCHRONIZE')),
-   *     logging: getOsEnv('TYPEORM_LOGGING'),
-   * },
-   */
+  db: {
+    name: "default",
+    type: getOsEnv("TYPEORM_CONNECTION"),
+    host: getOsEnvOptional("TYPEORM_HOST"),
+    port: toNumber(getOsEnvOptional("TYPEORM_PORT")),
+    username: getOsEnvOptional("TYPEORM_USERNAME"),
+    password: getOsEnvOptional("TYPEORM_PASSWORD"),
+    database: getOsEnv("TYPEORM_DATABASE"),
+    synchronize: toBool(getOsEnvOptional("TYPEORM_SYNCHRONIZE")),
+    logging: getOsEnv("TYPEORM_LOGGING"),
+    entities: getOsEnv("TYPEORM_ENTITIES").split(","),
+    migrations: getOsEnv("TYPEORM_MIGRATIONS").split(","),
+    subscribers: getOsEnv("TYPEORM_SUBSCRIBERS").split(","),
+    cli: {
+      entitiesDir: getOsEnv("TYPEORM_CLI_ENTITIES_DIR"),
+      migrationsDir: getOsEnv("TYPEORM_CLI_MIGRATIONS_DIR"),
+      subscribersDir: getOsEnv("TYPEORM_CLI_SUBSCRIBERS_DIR"),
+    },
+  },
 };

@@ -83,7 +83,7 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
       }
     }
 
-    if (!HANDLED_ERROR_CODES.includes(res.statusCode)) {
+    if (!env.isTest && !HANDLED_ERROR_CODES.includes(res.statusCode)) {
       try {
         this.errorRepository.save(ErrorLog.fromData({
           name: error.name || responseObject.name,

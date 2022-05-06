@@ -1,15 +1,14 @@
 import * as bcrypt from "bcrypt";
-import { Exclude } from "class-transformer";
-import { BeforeInsert, Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, Unique } from "typeorm";
+import { BeforeInsert, Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, Unique, OneToMany } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
 import { UserRoles, Roles } from "@app/api/types";
 import { Address } from "./Address";
 import { Card } from "./Card";
-import { Product } from "./Product";
-import { Vendor } from "./Vendor";
-import { Upload } from "./Upload";
 import { Order } from "./Order";
+import { Product } from "./Product";
+import { Upload } from "./Upload";
+import { Vendor } from "./Vendor";
 
 @Entity()
 @Unique("UQ_USER_EMAIL", ["email"])
@@ -29,7 +28,6 @@ export class User {
     type: "varchar",
     length: 255,
   })
-  @Exclude()
   public password: string;
 
   @Column({
@@ -63,22 +61,22 @@ export class User {
   public updatedOn: Date;
 
   @OneToMany(() => Address, address => address.user)
-  public addresses: Promise<Address[]> | Address[];
+  public addresses: Promise<Address[]>;
 
   @OneToMany(() => Card, card => card.user)
-  public cards: Promise<Card[]> | Card[];
+  public cards: Promise<Card[]>;
 
   @OneToMany(() => Vendor, vendor => vendor.createdBy)
-  public vendors: Promise<Vendor[]> | Vendor[];
+  public vendors: Promise<Vendor[]>;
 
   @OneToMany(() => Product, product => product.createdBy)
-  public products: Promise<Product[]> | Product[];
+  public products: Promise<Product[]>;
 
   @OneToMany(() => Upload, upload => upload.createdBy)
-  public uploads: Promise<Upload[]> | Upload[];
+  public uploads: Promise<Upload[]>;
 
   @OneToMany(() => Order, order => order.placedBy)
-  public orders: Promise<Order[]> | Order[];
+  public orders: Promise<Order[]>;
 
   @BeforeInsert()
   public async beforeInsert(): Promise<void> {

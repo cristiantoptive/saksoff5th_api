@@ -16,7 +16,7 @@ export class UserExcerptViewModel extends ViewModel {
   public construct(user: User): Promise<UserExcerptViewModel> {
     return super.mapObjectKeys({
       id: user.id,
-      fullName: user.firstName + user.lastName,
+      fullName: `${user.firstName} ${user.lastName}`,
     });
   }
 }

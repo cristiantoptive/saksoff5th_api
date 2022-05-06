@@ -1,7 +1,8 @@
 import { IsNotEmpty, IsString, MaxLength, IsEnum, IsOptional } from "class-validator";
 import { AddressTypes } from "@app/api/types";
+import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
-export class AddressCommand {
+export class AddressCommand extends AuthenticatedCommand {
   @IsEnum(AddressTypes, {
     message: "Address type isn't valid",
   })

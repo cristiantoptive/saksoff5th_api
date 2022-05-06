@@ -13,32 +13,30 @@ export class CardsService {
 
   public all(user: User): Promise<Card[]> {
     return this.cardsRepository.find({
-      where: [
-        {
-          user,
-        },
-      ],
+      where: {
+        user,
+      },
     });
   }
 
   public find(id: string, user: User): Promise<Card | undefined> {
     return this.cardsRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          user,
-        },
-      ],
+      where: {
+        id,
+        user,
+      },
     });
   }
 
   public create(command: CardCommand, user: User): Promise<Card> {
-    const card = Card.fromData({
-      user: user,
-      name: command.name,
-      number: command.number,
-      expiresOn: command.expiresOn,
-    });
+    const card = this.cardsRepository.create(
+      Card.fromData({
+        user: user,
+        name: command.name,
+        number: command.number,
+        expiresOn: new Date(command.expiresOn),
+      }),
+    );
 
     return this.cardsRepository.save(card);
   }
@@ -49,7 +47,7 @@ export class CardsService {
     Card.updateData(card, {
       name: command.name,
       number: command.number,
-      expiresOn: command.expiresOn,
+      expiresOn: new Date(command.expiresOn),
     });
 
     return this.cardsRepository.save(card);

@@ -1,6 +1,7 @@
-import { IsNotEmpty, IsString, MaxLength, IsDate } from "class-validator";
+import { IsNotEmpty, IsString, MaxLength, IsDateString } from "class-validator";
+import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
-export class CardCommand {
+export class CardCommand extends AuthenticatedCommand {
   @IsString()
   @IsNotEmpty({
     message: "Card holder name is required",
@@ -19,9 +20,9 @@ export class CardCommand {
   })
   public number: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty({
     message: "Card expiration date is required",
   })
-  public expiresOn: Date;
+  public expiresOn: string;
 }

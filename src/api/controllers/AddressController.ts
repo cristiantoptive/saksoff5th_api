@@ -13,12 +13,12 @@ export class AddressController {
   @Inject() private addressesService: AddressService;
 
   @Get()
-  public async all(@CurrentUser() user: User): Promise<AddressViewModel[]> {
+  public all(@CurrentUser() user: User): Promise<AddressViewModel[]> {
     return ViewModel.createMany(AddressViewModel, this.addressesService.all(user));
   }
 
   @Get("/:id")
-  public async one(@CurrentUser() user: User, @Param("id") id: string): Promise<AddressViewModel> {
+  public one(@CurrentUser() user: User, @Param("id") id: string): Promise<AddressViewModel> {
     return ViewModel.createOne(AddressViewModel, this.addressesService.find(id, user));
   }
 
@@ -36,7 +36,7 @@ export class AddressController {
   public async delete(@CurrentUser() user: User, @Param("id") id: string): Promise<any> {
     const result = await this.addressesService.delete(id, user);
 
-    if (!result) {
+    if (!result || !result.affected) {
       throw new BadRequestError("Can't delete target address");
     }
 

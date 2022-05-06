@@ -18,7 +18,7 @@ export class ProductCategoryController {
     isArray: true,
     description: "A array list of all the product categories availables",
   })
-  public async all(): Promise<ProductCategoryViewModel[]> {
+  public all(): Promise<ProductCategoryViewModel[]> {
     return ViewModel.createMany(ProductCategoryViewModel, this.categoriesService.all());
   }
 
@@ -27,7 +27,7 @@ export class ProductCategoryController {
   @ResponseSchema(ProductCategoryViewModel, {
     description: "A view of the target product category",
   })
-  public async one(@Param("id") id: string): Promise<ProductCategoryViewModel> {
+  public one(@Param("id") id: string): Promise<ProductCategoryViewModel> {
     return ViewModel.createOne(ProductCategoryViewModel, this.categoriesService.find(id));
   }
 
@@ -66,7 +66,7 @@ export class ProductCategoryController {
   public async delete(@Param("id") id: string): Promise<any> {
     const result = await this.categoriesService.delete(id);
 
-    if (!result) {
+    if (!result || !result.affected) {
       throw new BadRequestError("Can't delete target product category");
     }
 

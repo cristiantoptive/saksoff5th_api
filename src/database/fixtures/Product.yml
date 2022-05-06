@@ -1,13 +1,38 @@
 entity: Product
+resolvedFields: ["createdBy", "vendor", "category"]
+processor: ./processor/ProductProcessor
 items:
   product1:
-    SKU: 'PRODUCT_1'
-    title: 'Product 1'
-    description: 'Product 1 description'
+    id: 9335113d-552b-4e86-bd33-e74315c7b30a
+    SKU: PRODUCT_1
+    title: Product 1
+    description: Product 1 description
     price: 76.03
     inventory: 25
-    deliveryTime: '1 week'
+    deliveryTime: 1 week
     isActive: true
     createdBy: '@user2'
     vendor: '@vendor1'
     category: '@category1'
+  product2:
+    id: 1575113c-552b-4f86-bd99-e74315c7b75a
+    SKU: PRODUCT_2
+    title: Product 2
+    price: 2.53
+    inventory: 14
+    deliveryTime: 3 days
+    isActive: false
+    createdBy: '@user5'
+    vendor: '@vendor2'
+    category: '@category3'
+  product3:
+    id: a469d682-7a77-41a5-b23f-966ccf5aa42a
+    SKU: PRODUCT_3
+    title: Product 3
+    price: 0.15
+    inventory: 100
+    deliveryTime: 1 day
+    isActive: true
+    createdBy: '@user5'
+    vendor: '@vendor1'
+    category: '@category2'

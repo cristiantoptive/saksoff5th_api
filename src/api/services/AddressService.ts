@@ -14,37 +14,37 @@ export class AddressService {
 
   public all(user: User): Promise<Address[]> {
     return this.addressRepository.find({
-      where: [
-        {
-          user,
-        },
-      ],
+      where: {
+        user,
+      },
     });
   }
 
   public find(id: string, user: User, type?: AddressTypes): Promise<Address | undefined> {
     return this.addressRepository.findOneOrFail({
-      where: [{
+      where: {
         id,
         user,
         ...(type ? { type } : { }),
-      }],
+      },
     });
   }
 
   public create(command: AddressCommand, user: User): Promise<Address> {
-    const address = Address.fromData({
-      user: user,
-      type: command.type,
-      firstName: command.firstName,
-      lastName: command.lastName,
-      line1: command.line1,
-      line2: command.line2,
-      city: command.city,
-      state: command.state,
-      zipcode: command.zipcode,
-      country: command.country,
-    });
+    const address = this.addressRepository.create(
+      Address.fromData({
+        user: user,
+        type: command.type,
+        firstName: command.firstName,
+        lastName: command.lastName,
+        line1: command.line1,
+        line2: command.line2,
+        city: command.city,
+        state: command.state,
+        zipcode: command.zipcode,
+        country: command.country,
+      }),
+    );
 
     return this.addressRepository.save(address);
   }

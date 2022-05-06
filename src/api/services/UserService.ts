@@ -17,25 +17,40 @@ export class UserService {
 
   public find(id: string, failIfDoesntExists: boolean = true): Promise<User | undefined> {
     if (failIfDoesntExists) {
-      return this.userRepository.findOneOrFail({ id });
+      return this.userRepository.findOneOrFail({
+        where: {
+          id,
+        },
+      });
     }
 
-    return this.userRepository.findOne({ id });
+    return this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   public async create(command: UserCommand): Promise<User> {
-    const existingUser = await this.userRepository.findOne({ email: command.email });
+    const existingUser = await this.userRepository.findOne({
+      where: {
+        email: command.email,
+      },
+    });
+
     if (existingUser) {
       throw new UserAlreadyExistsError();
     }
 
-    const user = User.fromData({
-      email: command.email,
-      password: command.password,
-      role: command.role,
-      firstName: command.firstName,
-      lastName: command.lastName,
-    });
+    const user = this.userRepository.create(
+      User.fromData({
+        email: command.email,
+        password: command.password,
+        role: command.role,
+        firstName: command.firstName,
+        lastName: command.lastName,
+      }),
+    );
 
     return this.userRepository.save(user);
   }
@@ -44,7 +59,12 @@ export class UserService {
     const user = await this.find(id);
 
     if (command.email !== user.email) {
-      const existingUser = await this.userRepository.findOne({ email: command.email });
+      const existingUser = await this.userRepository.findOne({
+        where: {
+          email: command.email,
+        },
+      });
+
       if (existingUser) {
         throw new UserAlreadyExistsError();
       }

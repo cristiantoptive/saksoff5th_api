@@ -1,7 +1,10 @@
 entity: Address
+resolvedFields: ["user"]
+processor: ./processor/AddressProcessor
 items:
   address1:
-    type: 'shipping'
+    id: 39d01e74-c990-4612-810b-1459da48cddf
+    type: shipping
     line1: '{{address.streetAddress}}'
     line2: '{{address.secondaryAddress}}'
     city: '{{address.cityName}}'
@@ -10,10 +13,20 @@ items:
     country: '{{address.country}}'
     user: '@user3'
   address2:
-    type: 'billing'
+    id: 4ecabf37-5c8f-4cfb-809d-f85f09e9a0d7
+    type: billing
     line1: '{{address.streetAddress}}'
     city: '{{address.cityName}}'
     state: '{{address.state}}'
     zipcode: '{{address.zipCode}}'
     country: '{{address.country}}'
     user: '@user3'
+  address3:
+    id: 9fgabf28-6c5f-4cfb-819d-f85f09f3g3q1
+    type: shipping
+    line1: '{{address.streetAddress}}'
+    city: '{{address.cityName}}'
+    state: '{{address.state}}'
+    zipcode: '{{address.zipCode}}'
+    country: '{{address.country}}'
+    user: '@user6'

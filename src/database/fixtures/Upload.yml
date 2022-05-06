@@ -1,10 +1,12 @@
 entity: Upload
-processor: ../processor/UploadProcessor
+resolvedFields: ["product", "createdBy"]
+processor: ./processor/UploadProcessor
 items:
   upload1:
-    relatedTo: 'product'
-    name: 'product1_image1.jpeg'
-    type: 'image/jpeg'
+    id: c9cde2ca-a92d-49b4-9978-41b815044599
+    relatedTo: product
+    name: product1_image1.jpeg
+    type: image/jpeg
     size: 0
     s3Object: null
     product: '@product1'

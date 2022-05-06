@@ -32,6 +32,10 @@ export function authorizationChecker(): (action: Action, roles: any[]) => Promis
 
     action.request.user = await userService.find(tokenData.id, false);
 
+    if (action.request.body) {
+      action.request.body.currentUser = action.request.user;
+    }
+
     if (action.request.user === undefined) {
       log.warn("Invalid credentials given");
       return false;

@@ -1,9 +1,8 @@
-import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
+import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
 import { AddressTypes } from "@app/api/types";
 import { User } from "./User";
-import { Order } from "./Order";
 
 @Entity()
 export class Address {
@@ -83,25 +82,10 @@ export class Address {
   public updatedOn: Date;
 
   @ManyToOne(() => User, user => user.addresses, {
-    onDelete: "CASCADE",
     nullable: false,
+    onDelete: "CASCADE",
   })
-  public user: Promise<User> | User;
-
-  @OneToMany(() => Order, order => order.shippingAddress)
-  public usedForOrderShipping: Promise<Order[]> | Order[];
-
-  @OneToMany(() => Order, order => order.shippingAddress)
-  public usedForOrderBilling: Promise<Order[]> | Order[];
-
-  @BeforeInsert()
-  public async beforeInsert(): Promise<void> {
-    const user = await this.user;
-    if (user && !this.firstName && !this.lastName) {
-      this.firstName = user.firstName;
-      this.lastName = user.lastName;
-    }
-  }
+  public user: Promise<User>;
 
   public static fromData(data: { [prop: string]: any }): Address {
     return Address.updateData(new Address(), data);

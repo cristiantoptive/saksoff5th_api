@@ -1,3 +1,4 @@
+import { env } from "@app/env";
 import * as path from "path";
 import * as winston from "winston";
 import { LoggerInterface } from "./LoggerInterface";
@@ -60,7 +61,9 @@ export class Logger implements LoggerInterface {
   }
 
   private log(level: string, message: string, args: any[]): void {
-    Logger.logger[level](`${this.formatScope()} ${message}`, args);
+    if (!env.isTest) {
+      Logger.logger[level](`${this.formatScope()} ${message}`, args);
+    }
   }
 
   private formatScope(): string {

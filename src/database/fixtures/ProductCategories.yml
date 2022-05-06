@@ -1,8 +1,11 @@
 entity: ProductCategory
 items:
   category1:
+    id: c29974a0-8190-414a-b64f-d571fcc56082
     name: Shoes
   category2:
+    id: 25b4cf30-7da0-414d-8a0a-939866aaa670
     name: Handbags
   category3:
+    id: 72a831c7-e391-44f9-8636-ea348c945d85
     name: Beauty

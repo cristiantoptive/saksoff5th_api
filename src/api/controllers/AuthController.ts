@@ -1,4 +1,4 @@
-import { Authorized, Body, CurrentUser, ForbiddenError, Get, JsonController, NotFoundError, Post, Put } from "routing-controllers";
+import { Authorized, Body, CurrentUser, Get, JsonController, NotFoundError, Post, Put } from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import { Inject, Service } from "typedi";
 
@@ -6,7 +6,6 @@ import { ChangePasswordCommand, SigninCommand, SignupCommand } from "@app/api/co
 import { ViewModel, UserViewModel, AuthTokenViewModel } from "@app/api/viewmodels";
 import { AuthService } from "@app/api/services";
 import { User } from "@app/api/entities/User";
-import { env } from "@app/env";
 
 @Service()
 @JsonController("/auth")
@@ -28,19 +27,15 @@ export class AuthController {
   @Post("/signup")
   @OpenAPI({ summary: "Register a new user" })
   @ResponseSchema(UserViewModel)
-  public async signup(@Body() command: SignupCommand): Promise<UserViewModel> {
-    if (env.app.allowSignup) {
-      return ViewModel.createOne(UserViewModel, this.authService.createUser(command));
-    }
-
-    throw new ForbiddenError();
+  public signup(@Body() command: SignupCommand): Promise<UserViewModel> {
+    return ViewModel.createOne(UserViewModel, this.authService.createUser(command));
   }
 
   @Get("/user")
   @Authorized()
   @OpenAPI({ summary: "Return authenticated user data", security: [{ bearerAuth: [] }] })
   @ResponseSchema(UserViewModel)
-  public async current(@CurrentUser() user: User): Promise<UserViewModel> {
+  public current(@CurrentUser() user: User): Promise<UserViewModel> {
     return ViewModel.createOne(UserViewModel, user);
   }
 

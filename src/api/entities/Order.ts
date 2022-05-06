@@ -1,11 +1,11 @@
 import { Column, Entity, UpdateDateColumn, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 
 import { mergeByKeys } from "@app/lib/utils/functions";
-import { User } from "./User";
 import { OrderStatuses } from "@app/api/types";
+import { User } from "./User";
+import { OrderItem } from "./OrderItem";
 import { Address } from "./Address";
 import { Card } from "./Card";
-import { OrderItem } from "./OrderItem";
 
 @Entity()
 export class Order {
@@ -28,35 +28,35 @@ export class Order {
   })
   public updatedOn: Date;
 
-  @ManyToOne(() => User, user => user.orders, {
+  @ManyToOne(() => User, {
     nullable: true,
     onDelete: "SET NULL",
   })
-  public placedBy: Promise<User> | User;
+  public placedBy: Promise<User>;
 
-  @ManyToOne(() => Address, address => address.usedForOrderShipping, {
+  @ManyToOne(() => Address, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
-  public shippingAddress: Promise<Address> | Address;
+  public shippingAddress: Promise<Address>;
 
-  @ManyToOne(() => Address, address => address.usedForOrderBilling, {
+  @ManyToOne(() => Address, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
-  public billingAddress: Promise<Address> | Address;
+  public billingAddress: Promise<Address>;
 
-  @ManyToOne(() => Card, card => card.usedForOrder, {
+  @ManyToOne(() => Card, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "RESTRICT",
   })
-  public paymentCard: Promise<Card> | Card;
+  public paymentCard: Promise<Card>;
 
   @OneToMany(() => OrderItem, orderItem => orderItem.order)
-  public items: Promise<OrderItem[]> | OrderItem[];
+  public items: Promise<OrderItem[]>;
 
   public static fromData(data: { [prop: string]: any }): Order {
     return Order.updateData(new Order(), data);
@@ -72,6 +72,7 @@ export class Order {
         "shippingAddress",
         "billingAddress",
         "paymentCard",
+        "items",
       ],
     );
 

@@ -17,11 +17,9 @@ export class VendorService {
     }
 
     return this.vendorRepository.find({
-      where: [
-        {
-          createdBy: user,
-        },
-      ],
+      where: {
+        createdBy: user,
+      },
     });
   }
 
@@ -31,22 +29,22 @@ export class VendorService {
     }
 
     return this.vendorRepository.findOneOrFail({
-      where: [
-        {
-          id,
-          createdBy: user,
-        },
-      ],
+      where: {
+        id,
+        createdBy: user,
+      },
     });
   }
 
-  public create(command: VendorCommand, user: User): Promise<Vendor> {
-    const vendor = Vendor.fromData({
-      name: command.name,
-      createdBy: user,
-    });
+  public async create(command: VendorCommand, user: User): Promise<Vendor> {
+    const vendor = this.vendorRepository.create(
+      Vendor.fromData({
+        name: command.name,
+        createdBy: user,
+      }),
+    );
 
-    return this.vendorRepository.save(vendor);
+    return await this.vendorRepository.save(vendor);
   }
 
   public async update(id: string, command: VendorCommand, user: User): Promise<Vendor> {

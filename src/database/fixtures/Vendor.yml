@@ -1,5 +1,12 @@
 entity: Vendor
+resolvedFields: ["createdBy"]
+processor: ./processor/VendorProcessor
 items:
   vendor1:
-    name: 'Vendor 1'
+    id: 028987da-de88-4714-ab15-8c6f487a18bf
+    name: Vendor 1
     createdBy: '@user2'
+  vendor2:
+    id: dce40f78-f11d-4477-b0db-00e22488aad9
+    name: Vendor 2
+    createdBy: '@user5'

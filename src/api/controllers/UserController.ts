@@ -14,13 +14,13 @@ export class UserController {
 
   @Get()
   @Authorized()
-  public async all(): Promise<UserExcerptViewModel[]> {
+  public all(): Promise<UserExcerptViewModel[]> {
     return ViewModel.createMany(UserExcerptViewModel, this.userService.all());
   }
 
   @Get("/:id")
   @Authorized()
-  public async one(@Param("id") id: string): Promise<UserExcerptViewModel> {
+  public one(@Param("id") id: string): Promise<UserExcerptViewModel> {
     return ViewModel.createOne(UserExcerptViewModel, this.userService.find(id));
   }
 
@@ -45,7 +45,7 @@ export class UserController {
 
     const result = await this.userService.delete(id);
 
-    if (!result) {
+    if (!result || !result.affected) {
       throw new BadRequestError("Can't delete target user");
     }
 

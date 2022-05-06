@@ -3,9 +3,9 @@
     "lib": [
       "es5",
       "es6",
-      "esnext"
+      "ES2019"
     ],
-    "target": "esnext",
+    "target": "ES2019",
     "module": "commonjs",
     "moduleResolution": "node",
     "importHelpers": true,
@@ -21,7 +21,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",

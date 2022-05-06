@@ -24,7 +24,7 @@ export class CardViewModel extends ViewModel {
       id: card.id,
       name: card.name,
       number: card.number,
-      expiresOn: card.expiresOn,
+      expiresOn: new Date(card.expiresOn).toISOString(),
     });
   }
 }

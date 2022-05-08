@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import { JSONSchema } from "class-validator-jsonschema";
 import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
+@JSONSchema({
+  description: "This model is used to create or update product categories",
+})
 export class ProductCategoryCommand extends AuthenticatedCommand {
   @IsString()
   @IsNotEmpty({

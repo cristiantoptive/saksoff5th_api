@@ -10,9 +10,11 @@ enum Order {
 
 class OrderElement {
   @IsNotEmpty()
+  @IsOptional()
   public column: string;
 
   @IsEnum(Order)
+  @IsOptional()
   public direction: Order;
 }
 

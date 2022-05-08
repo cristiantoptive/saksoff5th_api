@@ -45,6 +45,13 @@ export class ProductViewModel extends ViewModel {
   @IsInstance(UploadViewModel, {
     each: true,
   })
+  @JSONSchema({
+    type: "array",
+    items: {
+      type: "object",
+      $ref: "#/components/schemas/UploadViewModel",
+    },
+  })
   public images: UploadViewModel[];
 
   public construct(product: Product): Promise<ProductViewModel> {

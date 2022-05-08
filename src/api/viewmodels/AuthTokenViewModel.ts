@@ -5,7 +5,7 @@ import { UserViewModel } from "./UserViewModel";
 import { ViewModel } from "./ViewModel";
 
 @JSONSchema({
-  description: "User authentication viewmodel",
+  description: "User authentication data viewmodel",
 })
 export class AuthTokenViewModel extends ViewModel {
   @IsString()

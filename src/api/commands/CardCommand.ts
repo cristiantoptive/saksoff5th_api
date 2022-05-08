@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsString, MaxLength, IsDateString } from "class-validator";
+import { JSONSchema } from "class-validator-jsonschema";
 import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
+@JSONSchema({
+  description: "This model is used to create or update user payment card",
+})
 export class CardCommand extends AuthenticatedCommand {
   @IsString()
   @IsNotEmpty({

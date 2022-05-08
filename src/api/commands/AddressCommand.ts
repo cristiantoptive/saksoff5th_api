@@ -1,7 +1,11 @@
 import { IsNotEmpty, IsString, MaxLength, IsEnum, IsOptional } from "class-validator";
 import { AddressTypes } from "@app/api/types";
+import { JSONSchema } from "class-validator-jsonschema";
 import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
+@JSONSchema({
+  description: "This model is used to create or update user addresses",
+})
 export class AddressCommand extends AuthenticatedCommand {
   @IsEnum(AddressTypes, {
     message: "Address type isn't valid",

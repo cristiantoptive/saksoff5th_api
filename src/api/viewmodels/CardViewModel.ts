@@ -4,7 +4,7 @@ import { ViewModel } from "./ViewModel";
 import { Card } from "@app/api/entities/Card";
 
 @JSONSchema({
-  description: "Card view model",
+  description: "User credit card view model",
 })
 export class CardViewModel extends ViewModel {
   @IsString()

@@ -10,3 +10,4 @@ export { ProductViewModel } from "./ProductViewModel";
 export { UploadViewModel } from "./UploadViewModel";
 export { OrderViewModel } from "./OrderViewModel";
 export { OrderItemViewModel } from "./OrderItemViewModel";
+export { DeletedViewModel } from "./DeletedViewModel";

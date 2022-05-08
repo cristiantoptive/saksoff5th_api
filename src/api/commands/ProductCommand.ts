@@ -1,9 +1,13 @@
 import { IsNotEmpty, IsNumber, Min, IsUUID, IsOptional, IsString, MaxLength, IsBoolean } from "class-validator";
+import { JSONSchema } from "class-validator-jsonschema";
 import { EntityMustExists } from "@app/api/validators";
 import { ProductCategory } from "@app/api/entities/ProductCategory";
 import { Vendor } from "@app/api/entities/Vendor";
 import { AuthenticatedCommand } from "./AuthenticatedCommand";
 
+@JSONSchema({
+  description: "This model is used to create or update products",
+})
 export class ProductCommand extends AuthenticatedCommand {
   @IsString()
   @IsNotEmpty({

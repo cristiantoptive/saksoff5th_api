@@ -30,6 +30,13 @@ export class OrderViewModel extends ViewModel {
   @IsInstance(OrderItemViewModel, {
     each: true,
   })
+  @JSONSchema({
+    type: "array",
+    items: {
+      type: "object",
+      $ref: "#/components/schemas/OrderItemViewModel",
+    },
+  })
   public items: OrderItemViewModel[];
 
   public construct(order: Order): Promise<OrderViewModel> {

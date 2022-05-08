@@ -5,7 +5,7 @@ import { Address } from "@app/api/entities/Address";
 import { AddressTypes } from "@app/api/types";
 
 @JSONSchema({
-  description: "Address view model",
+  description: "User address view model",
 })
 export class AddressViewModel extends ViewModel {
   @IsString()

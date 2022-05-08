@@ -1,39 +1,16 @@
-import { ArrayNotEmpty, IsArray, IsNumber, IsUUID, Min } from "class-validator";
-import { MoreThan } from "typeorm";
+import { ArrayNotEmpty, IsArray, IsUUID } from "class-validator";
+import { JSONSchema } from "class-validator-jsonschema";
 import { EntityMustExists } from "@app/api/validators";
 import { Address } from "@app/api/entities/Address";
 import { Card } from "@app/api/entities/Card";
-import { Product } from "@app/api/entities/Product";
 import { AddressTypes } from "@app/api/types";
 import { AuthenticatedCommand } from "./AuthenticatedCommand";
+import { OrderItemCommand } from "./OrderItemCommand";
 import { ValidateNested } from "@app/api/validators/ValidateNested";
 
-export class OrderItemCommand {
-  @IsUUID(4, {
-    message: "Product must be a valid product uuid",
-  })
-  @EntityMustExists(Product, {
-    mustMatch: (command: OrderItemCommand) => ({
-      inventory: MoreThan(command.quantity),
-      isActive: true,
-    }),
-    message: "Product does not exists or is inactive or there are no more stock available",
-  })
-  public product: Product;
-
-  @IsNumber({
-    allowNaN: false,
-    allowInfinity: false,
-    maxDecimalPlaces: 0,
-  }, {
-    message: "Item quantity must be a valid integer number",
-  })
-  @Min(1, {
-    message: "Item quantity must be a positive number greater than 1",
-  })
-  public quantity: number;
-}
-
+@JSONSchema({
+  description: "This model is used to create or update user orders",
+})
 export class OrderCommand extends AuthenticatedCommand {
   @IsUUID(4, {
     message: "Shipping address must be a valid shipping address uuid",
@@ -73,5 +50,12 @@ export class OrderCommand extends AuthenticatedCommand {
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested(OrderItemCommand)
+  @JSONSchema({
+    type: "array",
+    items: {
+      type: "object",
+      $ref: "#/components/schemas/OrderItemCommand",
+    },
+  })
   public items: OrderItemCommand[];
 }

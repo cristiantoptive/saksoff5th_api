@@ -26,9 +26,10 @@ export class AuthController {
 
   @Post("/signup")
   @OpenAPI({ summary: "Register a new user" })
-  @ResponseSchema(UserViewModel)
-  public signup(@Body() command: SignupCommand): Promise<UserViewModel> {
-    return ViewModel.createOne(UserViewModel, this.authService.createUser(command));
+  @ResponseSchema(AuthTokenViewModel)
+  public async signup(@Body() command: SignupCommand): Promise<AuthTokenViewModel> {
+    const user = await this.authService.createUser(command);
+    return ViewModel.createOne(AuthTokenViewModel, { user, token: this.authService.generateAuthToken(user) });
   }
 
   @Get("/user")

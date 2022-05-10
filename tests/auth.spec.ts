@@ -192,11 +192,13 @@ describe("App auth process should work", () => {
         }
 
         expect(res.body).toBeDefined();
-        expect(res.body.id).toBeDefined();
-        expect(res.body.email).toBe("new@user.com");
-        expect(res.body.role).toBe("customer");
-        expect(res.body.firstName).toBe("New");
-        expect(res.body.lastName).toBe("User");
+        expect(res.body.token).toBeDefined();
+        expect(res.body.user).toBeDefined();
+        expect(res.body.user.id).toBeDefined();
+        expect(res.body.user.email).toBe("new@user.com");
+        expect(res.body.user.role).toBe("customer");
+        expect(res.body.user.firstName).toBe("New");
+        expect(res.body.user.lastName).toBe("User");
 
         done();
       });

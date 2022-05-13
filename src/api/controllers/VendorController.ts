@@ -14,6 +14,7 @@ export class VendorController {
   @Inject() private vendorsService: VendorService;
 
   @Get()
+  @Authorized([Roles.Guest, Roles.Customer, Roles.Merchandiser])
   @OpenAPI({ summary: "List all vendors. Use query param 'onlyMine' to list all the vendors created by the authenticated user" })
   @ResponseSchema(VendorViewModel, { isArray: true })
   public all(@CurrentUser({ required: false }) user?: User, @QueryParam("onlyMine") onlyMine?: boolean): Promise<VendorViewModel[]> {

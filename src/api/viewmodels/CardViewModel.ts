@@ -23,7 +23,7 @@ export class CardViewModel extends ViewModel {
     return super.mapObjectKeys({
       id: card.id,
       name: card.name,
-      number: card.number,
+      number: `************${card.number.substring(12)}`,
       expiresOn: new Date(card.expiresOn).toISOString(),
     });
   }

@@ -17,8 +17,14 @@ export class ProductController {
   @Authorized([Roles.Guest, Roles.Customer, Roles.Merchandiser])
   @OpenAPI({ summary: "List all products. Use query param 'onlyMine' to list all the products created by the authenticated user" })
   @ResponseSchema(ProductViewModel, { isArray: true })
-  public all(@CurrentUser({ required: false }) user?: User, @QueryParam("onlyMine", { required: false }) onlyMine?: boolean): Promise<ProductViewModel[]> {
-    return ViewModel.createMany(ProductViewModel, this.productsService.all(user, onlyMine));
+  public all(
+    @CurrentUser({ required: false }) user?: User,
+    @QueryParam("onlyMine", { required: false }) onlyMine?: boolean,
+    @QueryParam("search", { required: false }) search?: string,
+    @QueryParam("categories", { required: false }) categories?: string,
+    @QueryParam("vendors", { required: false }) vendors?: string,
+  ): Promise<ProductViewModel[]> {
+    return ViewModel.createMany(ProductViewModel, this.productsService.all(user, onlyMine, search, categories, vendors));
   }
 
   @Get("/:id")

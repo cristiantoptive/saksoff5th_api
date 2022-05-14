@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { DeleteResult } from "typeorm";
+import { DeleteResult, Like, In } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { Product } from "@app/api/entities/Product";
@@ -11,18 +11,17 @@ import { ProductCommand } from "@app/api/commands";
 export class ProductsService {
   @InjectRepository() private productsRepository: ProductRepository;
 
-  public all(user?: User, onlyMine?: boolean): Promise<Product[]> {
-    if (!onlyMine) {
-      return this.productsRepository.find({
-        where: {
-          isActive: true,
-        },
-      });
-    }
+  public all(user?: User, onlyMine?: boolean, search?: string, categories?: string | string[], vendors?: string | string[]): Promise<Product[]> {
+    categories = categories ? (Array.isArray(categories) ? categories : [categories]) : [];
+    vendors = vendors ? (Array.isArray(vendors) ? vendors : [vendors]) : [];
 
     return this.productsRepository.find({
       where: {
-        createdBy: user,
+        ...(search && search.length ? { title: Like(`%${search}%`) } : { }),
+        ...(categories && categories.length ? { category: In(categories) } : { }),
+        ...(vendors && vendors.length ? { vendor: In(vendors) } : { }),
+        ...(!onlyMine ? { isActive: true } : { }),
+        ...(onlyMine ? { createdBy: user } : { }),
       },
     });
   }

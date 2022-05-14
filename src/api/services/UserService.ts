@@ -72,10 +72,10 @@ export class UserService {
 
     User.updateData(user, {
       email: command.email,
-      password: await User.hashPassword(command.password),
       role: command.role,
       firstName: command.firstName,
       lastName: command.lastName,
+      ...(command.password ? { password: await User.hashPassword(command.password) } : { }),
     });
 
     return this.userRepository.save(user);

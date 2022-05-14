@@ -171,7 +171,7 @@ describe("App cards endpoints should work", () => {
         expect(res.body).toBeDefined();
         expect(res.body.id).toBeDefined();
         expect(res.body.name).toBe("Jhon Doe");
-        expect(res.body.number).toBe("1234543467");
+        // expect(res.body.number).toBe("1234543467"); // card number is obfuscated now
         expect(res.body.expiresOn).toBe(expiresOn);
 
         newCardId = res.body.id;
@@ -195,7 +195,7 @@ describe("App cards endpoints should work", () => {
         expect(res.body).toBeDefined();
         expect(res.body.id).toBe(newCardId);
         expect(res.body.name).toBe("Jhon Doe");
-        expect(res.body.number).toBe("1234543467");
+        // expect(res.body.number).toBe("1234543467"); // card number is obfuscated now
         expect(res.body.expiresOn).toBeDefined();
 
         done();
@@ -250,7 +250,7 @@ describe("App cards endpoints should work", () => {
         expect(res.body).toBeDefined();
         expect(res.body.id).toBe(newCardId);
         expect(res.body.name).toBe("Jane Doe");
-        expect(res.body.number).toBe("5675834200453");
+        // expect(res.body.number).toBe("5675834200453"); // card number is obfuscated now
         expect(res.body.expiresOn).toBeDefined();
 
         done();

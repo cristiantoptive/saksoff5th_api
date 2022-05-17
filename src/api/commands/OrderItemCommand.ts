@@ -1,6 +1,6 @@
 import { IsNumber, IsUUID, Min } from "class-validator";
 import { JSONSchema } from "class-validator-jsonschema";
-import { MoreThan } from "typeorm";
+import { MoreThanOrEqual } from "typeorm";
 import { EntityMustExists } from "@app/api/validators";
 import { Product } from "@app/api/entities/Product";
 
@@ -13,7 +13,7 @@ export class OrderItemCommand {
   })
   @EntityMustExists(Product, {
     mustMatch: (command: OrderItemCommand) => ({
-      inventory: MoreThan(command.quantity),
+      inventory: MoreThanOrEqual(command.quantity),
       isActive: true,
     }),
     message: "Product does not exists or is inactive or there are no more stock available",

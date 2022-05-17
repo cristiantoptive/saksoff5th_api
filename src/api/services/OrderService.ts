@@ -74,8 +74,12 @@ export class OrderService {
       return null;
     }
 
-    // remove order items manually (no cascade) to propagate remove event
-    await this.orderItemRepository.remove(await order.items);
+    // remove order items manually (no cascade) to propagate remove event and restore stock
+    const items = await order.items;
+    for (const item of items) {
+      await item.product;
+      await this.orderItemRepository.remove(item);
+    }
 
     return this.orderRepository.delete({
       id,

@@ -57,7 +57,7 @@ export class ProductController {
   public async delete(@CurrentUser() user: User, @Param("id") id: string): Promise<DeletedViewModel> {
     const result = await this.productsService.delete(id, user);
 
-    if (!result || !result.affected) {
+    if (!result) {
       throw new BadRequestError("Can't delete target product");
     }
 

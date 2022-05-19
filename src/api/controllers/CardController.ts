@@ -35,7 +35,7 @@ export class CardController {
   }
 
   @Put("/:id")
-  @OpenAPI({ summary: "Updated existing credit card by id for the authenticated user", security: [{ bearerAuth: [] }] })
+  @OpenAPI({ summary: "Update existing credit card by id for the authenticated user", security: [{ bearerAuth: [] }] })
   @ResponseSchema(CardViewModel)
   public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: CardCommand): Promise<CardViewModel> {
     return ViewModel.createOne(CardViewModel, this.cardsService.update(id, command, user));

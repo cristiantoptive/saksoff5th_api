@@ -1,5 +1,5 @@
 import { Service } from "typedi";
-import { DeleteResult, Like, In } from "typeorm";
+import { Like, In } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { Product } from "@app/api/entities/Product";
@@ -76,10 +76,8 @@ export class ProductsService {
     return this.productsRepository.save(product);
   }
 
-  public async delete(id: string, user: User): Promise<DeleteResult> {
-    return this.productsRepository.delete({
-      id,
-      createdBy: user,
-    });
+  public async delete(id: string, user: User): Promise<boolean> {
+    const product = await this.productsRepository.remove(await this.find(id, user));
+    return !product.id;
   }
 }

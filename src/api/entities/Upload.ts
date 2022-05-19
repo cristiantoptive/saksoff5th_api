@@ -34,6 +34,12 @@ export class Upload {
 
   @Column({
     nullable: true,
+    type: "longtext",
+  })
+  public description: string;
+
+  @Column({
+    nullable: true,
     type: "varchar",
     length: 255,
   })
@@ -76,6 +82,7 @@ export class Upload {
       [
         "relatedTo",
         "name",
+        "description",
         "type",
         "size",
         "s3Object",

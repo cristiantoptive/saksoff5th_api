@@ -36,6 +36,11 @@ export class upload1650986094735 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: "description",
+            type: "longtext",
+            isNullable: true,
+          },
+          {
             name: "type",
             type: "varchar",
             length: "255",

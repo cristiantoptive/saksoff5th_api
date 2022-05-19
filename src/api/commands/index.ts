@@ -9,3 +9,4 @@ export { UserCommand } from "./UserCommand";
 export { SigninCommand } from "./SigninCommand";
 export { SignupCommand } from "./SignupCommand";
 export { ChangePasswordCommand } from "./ChangePasswordCommand";
+export { CreateUploadCommand, UpdateUploadCommand } from "./UploadsCommand";

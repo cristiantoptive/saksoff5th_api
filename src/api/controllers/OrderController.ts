@@ -35,7 +35,7 @@ export class OrderController {
   }
 
   @Put("/:id")
-  @OpenAPI({ summary: "Updated existing order by id for the authenticated user", security: [{ bearerAuth: [] }] })
+  @OpenAPI({ summary: "Update existing order by id for the authenticated user", security: [{ bearerAuth: [] }] })
   @ResponseSchema(OrderViewModel)
   public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: OrderCommand): Promise<OrderViewModel> {
     return ViewModel.createOne(OrderViewModel, this.ordersService.update(id, command, user));

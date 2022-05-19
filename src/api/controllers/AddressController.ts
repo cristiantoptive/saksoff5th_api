@@ -35,7 +35,7 @@ export class AddressController {
   }
 
   @Put("/:id")
-  @OpenAPI({ summary: "Updated existing address by id for the authenticated user", security: [{ bearerAuth: [] }] })
+  @OpenAPI({ summary: "Update existing address by id for the authenticated user", security: [{ bearerAuth: [] }] })
   @ResponseSchema(AddressViewModel)
   public update(@CurrentUser() user: User, @Param("id") id: string, @Body() command: AddressCommand): Promise<AddressViewModel> {
     return ViewModel.createOne(AddressViewModel, this.addressesService.update(id, command, user));

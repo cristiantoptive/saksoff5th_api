@@ -14,7 +14,7 @@ export class ProductController {
   @Inject() private productsService: ProductsService;
 
   @Get()
-  @Authorized([Roles.Guest, Roles.Customer, Roles.Merchandiser])
+  @Authorized([Roles.Guest, Roles.Customer, Roles.Merchandiser, Roles.Admin])
   @OpenAPI({ summary: "List all products. Use query param 'onlyMine' to list all the products created by the authenticated user" })
   @ResponseSchema(ProductViewModel, { isArray: true })
   public all(

@@ -10,7 +10,7 @@ import { UploadRepository } from "@app/api/repositories";
 import { CreateUploadCommand, UpdateUploadCommand } from "@app/api/commands";
 import { Upload } from "@app/api/entities/Upload";
 import { UploadFile, UploadRelatedTo } from "@app/api/types/UploadFile";
-import { tempfile } from "@app/lib/utils/functions";
+import { createS3Client, tempfile } from "@app/lib/utils/functions";
 import { env } from "@app/env";
 
 const MAX_CAPACITY = 5 * 1000 * 1000 * 1000; // Only 5gb has our S3 bucket
@@ -22,12 +22,7 @@ export class UploadService {
   @InjectRepository() private uploadRepository: UploadRepository;
   @Inject() private productsService: ProductsService;
 
-  private s3: AWS.S3 = new AWS.S3({
-    credentials: {
-      accessKeyId: env.s3.accessKeyId,
-      secretAccessKey: env.s3.secretAccessKey,
-    },
-  });
+  private s3: AWS.S3 = createS3Client();
 
   public async findOne(id: string): Promise<Upload | undefined> {
     return await this.uploadRepository.findOneOrFail(id);

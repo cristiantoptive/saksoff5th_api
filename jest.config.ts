@@ -23,4 +23,5 @@ export default {
     "**/tests/**/*.test.ts",
   ],
   testEnvironment: "node",
+  testTimeout: 30000,
 };

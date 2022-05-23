@@ -2,10 +2,11 @@ import request from "supertest";
 import { Express } from "express-serve-static-core";
 import { Connection } from "typeorm";
 import Container from "typedi";
-import app from "../src/app";
+import { init } from "../src/app";
 import { loadFixtures } from "@app/database/fixtures/runner";
 import { AuthService } from "@app/api/services";
 import { User } from "@app/api/entities/User";
+import { delay } from "@app/lib/utils/functions";
 
 let express: Express;
 let connection: Connection;
@@ -17,7 +18,8 @@ let newCategoryId: string;
 
 describe("App categories endpoints should work", () => {
   beforeAll(async() => {
-    ({ express, connection } = await app as any);
+    // init app stack
+    ({ express, connection } = await init());
 
     // clear database
     await connection.dropDatabase();
@@ -33,6 +35,7 @@ describe("App categories endpoints should work", () => {
 
   afterAll(async() => {
     // close connections and stop server
+    await delay(5000); // wait for ORM events propagation
     await (express as any).stop();
     await connection.close();
   });

@@ -2,7 +2,8 @@ import request from "supertest";
 import { Express } from "express-serve-static-core";
 import { Connection } from "typeorm";
 import { loadFixtures } from "../src/database/fixtures/runner";
-import app from "../src/app";
+import { init } from "../src/app";
+import { delay } from "@app/lib/utils/functions";
 
 let express: Express;
 let connection: Connection;
@@ -11,7 +12,8 @@ let newUserAuthToken;
 
 describe("App auth process should work", () => {
   beforeAll(async() => {
-    ({ express, connection } = await app as any);
+    // init app stack
+    ({ express, connection } = await init());
 
     // clear database
     await connection.dropDatabase();
@@ -23,6 +25,7 @@ describe("App auth process should work", () => {
 
   afterAll(async() => {
     // close connections and stop server
+    await delay(5000); // wait for ORM events propagation
     await (express as any).stop();
     await connection.close();
   });

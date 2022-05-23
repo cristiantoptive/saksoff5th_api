@@ -38,6 +38,7 @@ export const env = {
   },
   s3: {
     userName: getOsEnv("S3_USER"),
+    endpoint: getOsEnvOptional("S3_LOCALSTACK_ENDPOINT"),
     bucketName: getOsEnv("S3_BUCKET_NAME"),
     accessKeyId: getOsEnv("S3_ACCESS_KEY"),
     secretAccessKey: getOsEnv("S3_SECRET_KEY"),

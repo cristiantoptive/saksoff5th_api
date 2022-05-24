@@ -12,7 +12,7 @@
 * install the pre-requisites
 * crate two empty databases on your MySql server `saksoff5th` and `saksoff5th_test` (the second one is optional and only for running the test suite)
 * create the s3 buckets for development and testing e.g. `SaksOff5th-dev` and `SaksOff5th-test`
-* clone this repository using `git clone https://github.com/tartexs/saksoff5th.git` or `git clone git@github.com:tartexs/saksoff5th.git`
+* clone this repository using `git clone https://github.com/tartexs/saksoff5th_api.git` or `git clone git@github.com:tartexs/saksoff5th_api.git`
 * install project dependencies using Yarn or NPM by running `npm install` or `yarn install`
 * configure the app environments ([HOW TO](#how-to-configure-app-environments)) to match your current setup on the `.env.dev` and `.env.test` files.
 * run database migrations by running `npm run migration:run`
